@@ -1,42 +1,107 @@
-// prisma/schema.prisma
-
 generator client {
   provider = "prisma-client-js"
   output   = "../node_modules/.prisma/client"
 }
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+model Utilisateur {
+  id_utilisateur   String   @id @default(uuid()) @db.Char(36)
+  prenom           String   @db.VarChar(50)
+  nom              String   @db.VarChar(50)
+  email            String   @unique @db.VarChar(120)
+  mot_de_passe     String   @db.VarChar(255)
+  date_creation    DateTime @default(now())
+  date_mise_a_jour DateTime @updatedAt
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  firstName String?
-  lastName  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  habits    Habit[]
+  habitudes         Habitude[]
+  sessions_focus    SessionFocus[]
+  visionnages_video VisionnageVideo[]
+
+  @@map("utilisateurs")
 }
 
-model Habit {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String?
-  userId      Int
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  completions HabitCompletion[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Habitude {
+  id_habitude      Int      @id @default(autoincrement())
+  id_utilisateur   String   @db.Char(36)
+  titre            String   @db.VarChar(150)
+  description      String?  @db.Text
+  frequence        String   @default("quotidienne") @db.VarChar(32)
+  est_active       Boolean  @default(true)
+  date_creation    DateTime @default(now())
+  date_mise_a_jour DateTime @updatedAt
+
+  utilisateur          Utilisateur          @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
+  validations_habitude ValidationHabitude[]
+  serie_habitude       SerieHabitude?
+
+  @@map("habitudes")
 }
 
-model HabitCompletion {
-  id        Int      @id @default(autoincrement())
-  habitId   Int
-  habit     Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
-  date      DateTime @default(now())
-  createdAt DateTime @default(now())
+model ValidationHabitude {
+  id_validation   Int      @id @default(autoincrement())
+  id_habitude     Int
+  date_validation DateTime @db.Date
+  statut          String   @default("validee") @db.VarChar(32)
+  note            String?  @db.VarChar(500)
+  date_creation   DateTime @default(now())
+
+  habitude Habitude @relation(fields: [id_habitude], references: [id_habitude], onDelete: Cascade)
+
+  @@map("validations_habitude")
+}
+
+model SerieHabitude {
+  id_serie              Int       @id @default(autoincrement())
+  id_habitude           Int       @unique
+  streak_courant        Int       @default(0)
+  meilleur_streak       Int       @default(0)
+  derniere_date_validee DateTime? @db.Date
+
+  habitude Habitude @relation(fields: [id_habitude], references: [id_habitude], onDelete: Cascade)
+
+  @@map("series_habitude")
+}
+
+model SessionFocus {
+  id_session_focus Int       @id @default(autoincrement())
+  id_utilisateur   String    @db.Char(36)
+  debut            DateTime
+  fin              DateTime?
+  duree_prevue     Int?
+  duree_reelle     Int?
+  statut           String    @default("en_cours") @db.VarChar(32)
+
+  utilisateur Utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
+
+  @@map("sessions_focus")
+}
+
+model VideoMotivation {
+  id_video      Int      @id @default(autoincrement())
+  titre         String   @db.VarChar(255)
+  url           String   @db.VarChar(2048)
+  categorie     String?  @db.VarChar(100)
+  duree         Int?
+  date_creation DateTime @default(now())
+
+  visionnages VisionnageVideo[]
+
+  @@map("videos_motivation")
+}
+
+model VisionnageVideo {
+  id_visionnage   Int      @id @default(autoincrement())
+  id_utilisateur  String   @db.Char(36)
+  id_video        Int
+  date_visionnage DateTime @default(now())
+  duree_visionnee Int?
+
+  utilisateur Utilisateur     @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
+  video       VideoMotivation @relation(fields: [id_video], references: [id_video], onDelete: Cascade)
+
+  @@map("visionnages_video")
 }

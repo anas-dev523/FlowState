@@ -8,7 +8,8 @@ import Button from '../components/Button';
 function Register() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: '',
+    prenom: '',
+    nom: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -32,7 +33,8 @@ function Register() {
       const response = await register({
         email: formData.email,
         password: formData.password,
-        firstName: formData.firstName
+        prenom: formData.prenom,
+        nom: formData.nom
       });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
@@ -59,10 +61,11 @@ function Register() {
         display: 'flex', flexDirection: 'column', gap: '12px',
         width: '100%', maxWidth: '300px'
       }}>
-        <Input type="text" name="firstName" placeholder="Nom" value={formData.firstName} onChange={handleChange} />
+        <Input type="text" name="prenom" placeholder="Prénom" value={formData.prenom} onChange={handleChange} required />
+        <Input type="text" name="nom" placeholder="Nom" value={formData.nom} onChange={handleChange} required />
         <Input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-        <Input type="password" name="password" placeholder="mot de passe" value={formData.password} onChange={handleChange} required />
-        <Input type="password" name="confirmPassword" placeholder="confirmer le mot de passe" value={formData.confirmPassword} onChange={handleChange} required />
+        <Input type="password" name="password" placeholder="Mot de passe" value={formData.password} onChange={handleChange} required />
+        <Input type="password" name="confirmPassword" placeholder="Confirmer le mot de passe" value={formData.confirmPassword} onChange={handleChange} required />
         <Button type="submit" disabled={loading}>
           {loading ? 'Inscription...' : "S'inscrire"}
         </Button>

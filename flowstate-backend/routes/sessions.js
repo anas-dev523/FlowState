@@ -1,0 +1,66 @@
+const express = require('express');
+const { PrismaClient } = require('@prisma/client');
+const authMiddleware = require('../middleware/auth');
+
+const router = express.Router();
+const prisma = new PrismaClient();
+
+router.use(authMiddleware);
+
+// GET /api/sessions
+router.get('/', async (req, res) => {
+  try {
+    const sessions = await prisma.sessionFocus.findMany({
+      where: { id_utilisateur: req.user.userId },
+      orderBy: { debut: 'desc' }
+    });
+    res.json(sessions);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+// POST /api/sessions - démarrer une session
+router.post('/', async (req, res) => {
+  try {
+    const { duree_prevue } = req.body;
+
+    const session = await prisma.sessionFocus.create({
+      data: {
+        id_utilisateur: req.user.userId,
+        debut: new Date(),
+        duree_prevue,
+        statut: 'en_cours'
+      }
+    });
+    res.status(201).json(session);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+// PUT /api/sessions/:id/terminer
+router.put('/:id/terminer', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { statut } = req.body;
+
+    const session = await prisma.sessionFocus.findFirst({
+      where: { id_session_focus: id, id_utilisateur: req.user.userId }
+    });
+    if (!session) return res.status(404).json({ error: 'Session non trouvée' });
+
+    const fin = new Date();
+    const duree_reelle = Math.round((fin - session.debut) / 1000 / 60);
+
+    const updated = await prisma.sessionFocus.update({
+      where: { id_session_focus: id },
+      data: { fin, duree_reelle, statut: statut || 'terminee' }
+    });
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+module.exports = router;

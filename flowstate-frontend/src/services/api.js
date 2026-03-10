@@ -13,8 +13,24 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// Auth API
+// Auth
 export const register = (data) => API.post('/auth/register', data);
 export const login = (data) => API.post('/auth/login', data);
+
+// Habitudes
+export const getHabitudes = () => API.get('/habitudes');
+export const createHabitude = (data) => API.post('/habitudes', data);
+export const updateHabitude = (id, data) => API.put(`/habitudes/${id}`, data);
+export const deleteHabitude = (id) => API.delete(`/habitudes/${id}`);
+export const validerHabitude = (id, data) => API.post(`/habitudes/${id}/valider`, data);
+
+// Sessions focus
+export const getSessions = () => API.get('/sessions');
+export const startSession = (data) => API.post('/sessions', data);
+export const endSession = (id, data) => API.put(`/sessions/${id}/terminer`, data);
+
+// Vidéos
+export const getVideos = () => API.get('/videos');
+export const logVisionnage = (id, data) => API.post(`/videos/${id}/visionner`, data);
 
 export default API;
