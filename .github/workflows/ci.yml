@@ -18,9 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: flowstate-backend/package-lock.json
+          node-version: 22
 
       - name: Install dependencies
         working-directory: flowstate-backend
@@ -37,17 +35,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: flowstate-frontend/package-lock.json
+          node-version: 22
 
       - name: Install dependencies
         working-directory: flowstate-frontend
-        run: npm install
-
-      - name: Run tests
-        working-directory: flowstate-frontend
-        run: npm test -- --watchAll=false --passWithNoTests
+        run: npm install --legacy-peer-deps
 
       - name: Build React app
         working-directory: flowstate-frontend

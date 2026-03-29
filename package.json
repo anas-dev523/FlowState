@@ -1,0 +1,24 @@
+{
+  "name": "flowstate",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000F\u0000l\u0000o\u0000w\u0000S\u0000t\u0000a\u0000t\u0000e\u0000 \u0000-\u0000 \u0000A\u0000p\u0000p\u0000l\u0000i\u0000c\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000C\u0000D\u0000A\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently --names \"BACK,FRONT\" --prefix-colors \"cyan,magenta\" \"cd flowstate-backend && npm run dev\" \"cd flowstate-frontend && npm start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anas-dev523/FlowState.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anas-dev523/FlowState/issues"
+  },
+  "homepage": "https://github.com/anas-dev523/FlowState#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
