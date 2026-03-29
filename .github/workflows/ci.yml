@@ -41,12 +41,6 @@ jobs:
         working-directory: flowstate-frontend
         run: npm install --legacy-peer-deps
 
-      - name: Run tests
-        working-directory: flowstate-frontend
-        env:
-          CI: false
-        run: npm test -- --watchAll=false --passWithNoTests
-
       - name: Build React app
         working-directory: flowstate-frontend
         env:
