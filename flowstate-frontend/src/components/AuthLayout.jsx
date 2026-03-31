@@ -1,4 +1,3 @@
-// components/AuthLayout.jsx
 // Layout partagé entre Login et Register :
 // bloc bleu en haut avec logo + coupe diagonale + blanc en bas
 
