@@ -1,13 +1,13 @@
 // Bouton réutilisable : variant "filled" (bleu plein) ou "outline" (bordure bleue)
 
-function Button({ children, onClick, type = 'button', variant = 'filled', disabled = false }) {
+function Button({ children, onClick, type = 'button', variant = 'filled', disabled = false, width = '100%' }) {
   const base = {
     padding: '13px',
     borderRadius: '25px',
     fontSize: '15px',
     fontWeight: '600',
     cursor: 'pointer',
-    width: '100%',
+    width: width,
     fontFamily: 'inherit'
   };
 
@@ -23,6 +23,12 @@ function Button({ children, onClick, type = 'button', variant = 'filled', disabl
       border: '2px solid #6F7BFF',
       backgroundColor: 'transparent',
       color: '#6F7BFF'
+    },
+    dark: {
+      ...base,
+      border:'none',
+      backgroundColor: '#000000',
+      color :'#ffffff'
     }
   };
 
