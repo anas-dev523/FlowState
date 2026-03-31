@@ -1,4 +1,3 @@
-// components/Button.jsx
 // Bouton réutilisable : variant "filled" (bleu plein) ou "outline" (bordure bleue)
 
 function Button({ children, onClick, type = 'button', variant = 'filled', disabled = false }) {

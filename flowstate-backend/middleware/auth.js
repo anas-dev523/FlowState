@@ -1,4 +1,3 @@
-// middleware/auth.js
 // Middleware de vérification du token JWT
 
 const jwt = require('jsonwebtoken');
