@@ -8,72 +8,91 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Frequence {
+  quotidienne
+  hebdomadaire
+  mensuelle
+}
+
 model Utilisateur {
-  id_utilisateur   String   @id @default(uuid()) @db.Char(36)
+  id_utilisateur   Int      @id @default(autoincrement())
   prenom           String   @db.VarChar(50)
   nom              String   @db.VarChar(50)
-  email            String   @unique @db.VarChar(120)
+  email            String   @unique @db.VarChar(254)
   mot_de_passe     String   @db.VarChar(255)
   date_creation    DateTime @default(now())
   date_mise_a_jour DateTime @updatedAt
 
-  habitudes         Habitude[]
-  sessions_focus    SessionFocus[]
-  visionnages_video VisionnageVideo[]
+  suivis             Suivre[]
+  validations        ValidationHabitude[]
+  scores_journaliers ScoreJournalier[]
+  sessions_focus     SessionFocus[]
+  visionnages_video  VisionnageVideo[]
 
   @@map("utilisateurs")
 }
 
 model Habitude {
-  id_habitude      Int      @id @default(autoincrement())
-  id_utilisateur   String   @db.Char(36)
-  titre            String   @db.VarChar(150)
-  description      String?  @db.Text
-  frequence        String   @default("quotidienne") @db.VarChar(32)
-  est_active       Boolean  @default(true)
-  date_creation    DateTime @default(now())
-  date_mise_a_jour DateTime @updatedAt
+  id_habitude      Int       @id @default(autoincrement())
+  titre            String    @db.VarChar(255)
+  description      String?   @db.Text
+  frequence        Frequence @default(quotidienne)
+  est_active       Boolean   @default(true)
+  date_creation    DateTime  @default(now())
+  date_mise_a_jour DateTime  @updatedAt
 
-  utilisateur          Utilisateur          @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
+  suivis               Suivre[]
   validations_habitude ValidationHabitude[]
-  serie_habitude       SerieHabitude?
 
   @@map("habitudes")
 }
 
+model Suivre {
+  id_utilisateur Int
+  id_habitude    Int
+
+  utilisateur Utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
+  habitude    Habitude    @relation(fields: [id_habitude], references: [id_habitude], onDelete: Cascade)
+
+  @@id([id_utilisateur, id_habitude])
+  @@map("suivre")
+}
+
 model ValidationHabitude {
   id_validation   Int      @id @default(autoincrement())
+  id_utilisateur  Int
   id_habitude     Int
   date_validation DateTime @db.Date
-  statut          String   @default("validee") @db.VarChar(32)
-  note            String?  @db.VarChar(500)
+  est_validee     Boolean  @default(false)
+  note            Int?
   date_creation   DateTime @default(now())
 
-  habitude Habitude @relation(fields: [id_habitude], references: [id_habitude], onDelete: Cascade)
+  utilisateur Utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
+  habitude    Habitude    @relation(fields: [id_habitude], references: [id_habitude], onDelete: Cascade)
 
   @@map("validations_habitude")
 }
 
-model SerieHabitude {
-  id_serie              Int       @id @default(autoincrement())
-  id_habitude           Int       @unique
-  streak_courant        Int       @default(0)
-  meilleur_streak       Int       @default(0)
-  derniere_date_validee DateTime? @db.Date
+model ScoreJournalier {
+  id_score       Int      @id @default(autoincrement())
+  id_utilisateur Int
+  date           DateTime @db.Date
+  score          Int      @default(0)
+  details        Json?
 
-  habitude Habitude @relation(fields: [id_habitude], references: [id_habitude], onDelete: Cascade)
+  utilisateur Utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
 
-  @@map("series_habitude")
+  @@unique([id_utilisateur, date])
+  @@map("score_journalier")
 }
 
 model SessionFocus {
   id_session_focus Int       @id @default(autoincrement())
-  id_utilisateur   String    @db.Char(36)
+  id_utilisateur   Int
   debut            DateTime
   fin              DateTime?
-  duree_prevue     Int?
   duree_reelle     Int?
-  statut           String    @default("en_cours") @db.VarChar(32)
+  est_terminee     Boolean   @default(false)
 
   utilisateur Utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
 
@@ -95,7 +114,7 @@ model VideoMotivation {
 
 model VisionnageVideo {
   id_visionnage   Int      @id @default(autoincrement())
-  id_utilisateur  String   @db.Char(36)
+  id_utilisateur  Int
   id_video        Int
   date_visionnage DateTime @default(now())
   duree_visionnee Int?

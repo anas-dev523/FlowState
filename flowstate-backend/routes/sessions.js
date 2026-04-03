@@ -23,14 +23,10 @@ router.get('/', async (req, res) => {
 // POST /api/sessions - démarrer une session
 router.post('/', async (req, res) => {
   try {
-    const { duree_prevue } = req.body;
-
     const session = await prisma.sessionFocus.create({
       data: {
         id_utilisateur: req.user.userId,
-        debut: new Date(),
-        duree_prevue,
-        statut: 'en_cours'
+        debut: new Date()
       }
     });
     res.status(201).json(session);
@@ -43,7 +39,6 @@ router.post('/', async (req, res) => {
 router.put('/:id/terminer', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const { statut } = req.body;
 
     const session = await prisma.sessionFocus.findFirst({
       where: { id_session_focus: id, id_utilisateur: req.user.userId }
@@ -55,7 +50,7 @@ router.put('/:id/terminer', async (req, res) => {
 
     const updated = await prisma.sessionFocus.update({
       where: { id_session_focus: id },
-      data: { fin, duree_reelle, statut: statut || 'terminee' }
+      data: { fin, duree_reelle, est_terminee: true }
     });
     res.json(updated);
   } catch (error) {
