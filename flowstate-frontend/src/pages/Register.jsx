@@ -136,11 +136,11 @@ function Register() {
         display: 'flex', flexDirection: 'column', gap: '12px',
         width: '100%', maxWidth: '300px'
       }}>
-        <Input type="text" name="prenom" placeholder="Prénom" value={formData.prenom} onChange={handleChange} required />
-        <Input type="text" name="nom" placeholder="Nom" value={formData.nom} onChange={handleChange} required />
-        <Input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-        <Input type="password" name="password" placeholder="Mot de passe" value={formData.password} onChange={handleChange} required />
-        <Input type="password" name="confirmPassword" placeholder="Confirmer le mot de passe" value={formData.confirmPassword} onChange={handleChange} required />
+        <Input type="text" name="prenom" placeholder="Prénom *" value={formData.prenom} onChange={handleChange} required />
+        <Input type="text" name="nom" placeholder="Nom *" value={formData.nom} onChange={handleChange} required />
+        <Input type="email" name="email" placeholder="Email *" value={formData.email} onChange={handleChange} required />
+        <Input type="password" name="password" placeholder="Mot de passe *" value={formData.password} onChange={handleChange} required />
+        <Input type="password" name="confirmPassword" placeholder="Confirmer le mot de passe *" value={formData.confirmPassword} onChange={handleChange} required />
 
         <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#555', cursor: 'pointer' }}>
           <input

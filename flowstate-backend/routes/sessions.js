@@ -23,6 +23,13 @@ router.get('/', async (req, res) => {
 // POST /api/sessions - démarrer une session
 router.post('/', async (req, res) => {
   try {
+    const sessionActive = await prisma.sessionFocus.findFirst({
+    where: { est_terminee: false, id_utilisateur: req.user.userId }
+   });
+   if (sessionActive){
+     return res.status(400).json({ error: 'autre session es t deja en cour' });
+   }
+
     const session = await prisma.sessionFocus.create({
       data: {
         id_utilisateur: req.user.userId,
