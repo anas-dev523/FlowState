@@ -4,7 +4,6 @@ import { login } from '../services/api';
 import AuthLayout from '../components/AuthLayout';
 import Input from '../components/Input';
 import Button from '../components/Button';
-
 function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -54,7 +53,16 @@ function Login() {
         <Button variant="outline" onClick={() => navigate('/register')}>
           Creer un compte
         </Button>
+        <div style={{ textAlign: 'center', marginTop: '12px'}}>
+        <span
+            onClick={() => navigate('/ForgotPassword')}
+            style={{ color: '#6F7BFF', textDecoration: 'underline', cursor: 'pointer' }}
+          >
+            mot de passe oublié 
+          </span>
+          </div>
       </form>
+
     </AuthLayout>
   );
 }

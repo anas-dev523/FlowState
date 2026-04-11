@@ -4,17 +4,24 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Welcome from './pages/Welcome';
 import DevPage from './DevPage';
-
+import UserSpace from './pages/UserSpace';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Welcome />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/UserSpace" element={<UserSpace />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="*" element={<Navigate to="/login" />} />
         <Route path='/dev' element={<DevPage/>}></Route>
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

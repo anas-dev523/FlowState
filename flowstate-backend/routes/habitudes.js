@@ -11,8 +11,7 @@ router.use(authMiddleware);
 router.get('/', async (req, res) => {
   try {
     const habitudes = await prisma.habitude.findMany({
-      where: { id_utilisateur: req.user.userId },
-      include: { serie_habitude: true },
+      where: { suivis: { some: { id_utilisateur: req.user.userId } } },
       orderBy: { date_creation: 'desc' }
     });
     res.json(habitudes);
@@ -29,14 +28,15 @@ router.post('/', async (req, res) => {
 
     const habitude = await prisma.habitude.create({
       data: {
-        id_utilisateur: req.user.userId,
         titre,
         description,
         frequence: frequence || 'quotidienne'
       }
     });
 
-    await prisma.serieHabitude.create({ data: { id_habitude: habitude.id_habitude } });
+    await prisma.suivre.create({
+      data: { id_utilisateur: req.user.userId, id_habitude: habitude.id_habitude }
+    });
 
     res.status(201).json(habitude);
   } catch (error) {
@@ -51,7 +51,7 @@ router.put('/:id', async (req, res) => {
     const { titre, description, frequence, est_active } = req.body;
 
     const habitude = await prisma.habitude.findFirst({
-      where: { id_habitude: id, id_utilisateur: req.user.userId }
+      where: { id_habitude: id, suivis: { some: { id_utilisateur: req.user.userId } } }
     });
     if (!habitude) return res.status(404).json({ error: 'Habitude non trouvée' });
 
@@ -71,7 +71,7 @@ router.delete('/:id', async (req, res) => {
     const id = parseInt(req.params.id);
 
     const habitude = await prisma.habitude.findFirst({
-      where: { id_habitude: id, id_utilisateur: req.user.userId }
+      where: { id_habitude: id, suivis: { some: { id_utilisateur: req.user.userId } } }
     });
     if (!habitude) return res.status(404).json({ error: 'Habitude non trouvée' });
 
@@ -89,7 +89,7 @@ router.post('/:id/valider', async (req, res) => {
     const { note } = req.body;
 
     const habitude = await prisma.habitude.findFirst({
-      where: { id_habitude: id, id_utilisateur: req.user.userId }
+      where: { id_habitude: id, suivis: { some: { id_utilisateur: req.user.userId } } }
     });
     if (!habitude) return res.status(404).json({ error: 'Habitude non trouvée' });
 
@@ -97,23 +97,12 @@ router.post('/:id/valider', async (req, res) => {
     today.setHours(0, 0, 0, 0);
 
     const existing = await prisma.validationHabitude.findFirst({
-      where: { id_habitude: id, date_validation: today }
+      where: { id_habitude: id, id_utilisateur: req.user.userId, date_validation: today }
     });
     if (existing) return res.status(400).json({ error: 'Habitude déjà validée aujourd\'hui' });
 
     const validation = await prisma.validationHabitude.create({
-      data: { id_habitude: id, date_validation: today, note }
-    });
-
-    const serie = await prisma.serieHabitude.findUnique({ where: { id_habitude: id } });
-    const newStreak = serie.streak_courant + 1;
-    await prisma.serieHabitude.update({
-      where: { id_habitude: id },
-      data: {
-        streak_courant: newStreak,
-        meilleur_streak: Math.max(newStreak, serie.meilleur_streak),
-        derniere_date_validee: today
-      }
+      data: { id_habitude: id, id_utilisateur: req.user.userId, date_validation: today, note: note !== undefined ? parseInt(note) : undefined }
     });
 
     res.status(201).json(validation);

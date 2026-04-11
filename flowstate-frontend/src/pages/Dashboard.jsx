@@ -14,12 +14,17 @@ function Dashboard() {
         display: 'flex', justifyContent: 'space-between', alignItems: 'center'
       }}>
         <Logo width={100} />
-        <img
-          src={user.photo || 'https://placehold.co/40x40'}
-          alt="profil"
-          onClick={() => navigate('/profil')}
-          style={{ width: 40, height: 40, borderRadius: '50%', cursor: 'pointer', objectFit: 'cover' }}
-        />
+        <div
+          onClick={() => navigate('/UserSpace')}
+          style={{
+            width: 40, height: 40, borderRadius: '50%', cursor: 'pointer',
+            backgroundColor: '#fff', display: 'flex', alignItems: 'center',
+            justifyContent: 'center', fontWeight: 700, fontSize: 15,
+            color: '#6F7BFF', flexShrink: 0,
+          }}
+        >
+          {`${user.prenom?.[0] || ''}${user.nom?.[0] || ''}`.toUpperCase()}
+        </div>
       </div>
 
       <div style={{ padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
