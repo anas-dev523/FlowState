@@ -5,6 +5,8 @@ const { PrismaClient } = require('@prisma/client');
 const authenticateToken = require('../middleware/auth');
 const router = express.Router();
 const prisma = new PrismaClient();
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
@@ -166,5 +168,74 @@ router.delete('/account', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Erreur serveur lors de la suppression du compte' });
   }
 });
+
+// POST /api/auth/doregot-password
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email ) {
+      return res.status(400).json({ error: 'Email requis' });
+    }
+   const user = await prisma.utilisateur.findUnique({ where: { email } });
+    if (!user) {
+      return res.status(400).json({ error: 'acun mail chez nous comme ca' });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    await prisma.utilisateur.update({
+      where: { id_utilisateur: user.id_utilisateur },
+      data: { reset_token: resetToken,
+              reset_token_expiry: new Date(Date.now() + 3600000)
+       }
+      
+    });
+    const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+await transporter.sendMail({
+  from: process.env.EMAIL_USER,
+  to: email,
+  subject: 'Réinitialisation de mot de passe FlowState',
+  html: `<p>Clique sur ce lien pour réinitialiser ton mot de passe :</p>
+       <a href="http://localhost:3000/reset-password?token=${resetToken}">Réinitialiser</a>
+       <p>Ce lien expire dans 1 heure.</p>`
+
+});
+
+res.json({ message: 'Email envoyé avec succès' });
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+// POST /api/auth/reset-password
+router.post('/reset-password', async (req, res) => {
+  try{
+  const { token, nouveauPassword } = req.body;
+   const tokenexist = await prisma.utilisateur.findFirst({ where: { reset_token : token} })
+    if(!tokenexist){
+      return res.status(400).json({ error: 'acun token chez nous comme ca' });
+    }
+    if(tokenexist.reset_token_expiry < new Date()) {
+       return res.status(400).json({ error: 'Token expiré' });
+    }
+const hashed = await bcrypt.hash(nouveauPassword, 10);
+await prisma.utilisateur.update({
+  where: { id_utilisateur: tokenexist.id_utilisateur },
+  data: { mot_de_passe: hashed, reset_token: null, reset_token_expiry: null }
+});
+res.json({ message: 'Mot de passe réinitialisé avec succès' });
+  }
+  catch(error){
+    res.status(500).json({ error: 'Erreur serveur'});
+  }
+
+});
+
 
 module.exports = router;

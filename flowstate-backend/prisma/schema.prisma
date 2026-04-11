@@ -22,6 +22,8 @@ model Utilisateur {
   mot_de_passe     String   @db.VarChar(255)
   date_creation    DateTime @default(now())
   date_mise_a_jour DateTime @updatedAt
+  reset_token      String?   
+  reset_token_expiry DateTime?
 
   suivis             Suivre[]
   validations        ValidationHabitude[]
