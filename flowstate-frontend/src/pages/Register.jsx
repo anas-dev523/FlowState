@@ -111,7 +111,7 @@ function Register() {
       });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
-      navigate('/dashboard');
+      navigate('/userIntroduction');
     } catch (err) {
       setError(err.response?.data?.error || "Erreur lors de l'inscription");
     } finally {

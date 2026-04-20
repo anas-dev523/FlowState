@@ -35,8 +35,10 @@ export const forgotPassword  = (data) => API.post('/auth/forgot-password',data);
 export const resetPassword  = (data) => API.post('/auth/reset-password',data);
 
 // Habitudes
+export const getCatalogue = () => API.get('/habitudes/catalogue');
 export const getHabitudes = () => API.get('/habitudes');
 export const createHabitude = (data) => API.post('/habitudes', data);
+export const suivreHabitude = (id) => API.post(`/habitudes/${id}/suivre`);
 export const updateHabitude = (id, data) => API.put(`/habitudes/${id}`, data);
 export const deleteHabitude = (id) => API.delete(`/habitudes/${id}`);
 export const validerHabitude = (id, data) => API.post(`/habitudes/${id}/valider`, data);

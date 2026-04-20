@@ -88,6 +88,8 @@ cd flowstate-backend
 npx prisma db push       # Applique le schema vers la DB
 npx prisma generate      # Regenere le client apres modif du schema
 npx prisma studio        # Interface web pour visualiser les donnees
+#lancer la migration : 
+npx prisma migrate dev --name update_schema_v2
 ```
 
 ---

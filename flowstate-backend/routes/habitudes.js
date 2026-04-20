@@ -5,9 +5,22 @@ const authMiddleware = require('../middleware/auth');
 const router = express.Router();
 const prisma = new PrismaClient();
 
+// GET /api/habitudes/catalogue — toutes les habitudes disponibles (pour le picker)
+router.get('/catalogue', authMiddleware, async (req, res) => {
+  try {
+    const habitudes = await prisma.habitude.findMany({
+      where: { est_active: true },
+      orderBy: { date_creation: 'asc' }
+    });
+    res.json(habitudes);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
 router.use(authMiddleware);
 
-// GET /api/habitudes
+// GET /api/habitudes — les habitudes suivies par l'utilisateur
 router.get('/', async (req, res) => {
   try {
     const habitudes = await prisma.habitude.findMany({
@@ -20,25 +33,24 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST /api/habitudes
-router.post('/', async (req, res) => {
+// POST /api/habitudes/:id/suivre — l'utilisateur s'abonne a une habitude existante
+router.post('/:id/suivre', async (req, res) => {
   try {
-    const { titre, description, frequence } = req.body;
-    if (!titre) return res.status(400).json({ error: 'Le titre est requis' });
+    const id = parseInt(req.params.id);
 
-    const habitude = await prisma.habitude.create({
-      data: {
-        titre,
-        description,
-        frequence: frequence || 'quotidienne'
-      }
+    const habitude = await prisma.habitude.findUnique({ where: { id_habitude: id } });
+    if (!habitude) return res.status(404).json({ error: 'Habitude non trouvée' });
+
+    const existing = await prisma.suivre.findUnique({
+      where: { id_utilisateur_id_habitude: { id_utilisateur: req.user.userId, id_habitude: id } }
     });
+    if (existing) return res.status(400).json({ error: 'Habitude déjà suivie' });
 
     await prisma.suivre.create({
-      data: { id_utilisateur: req.user.userId, id_habitude: habitude.id_habitude }
+      data: { id_utilisateur: req.user.userId, id_habitude: id }
     });
 
-    res.status(201).json(habitude);
+    res.status(201).json({ message: 'Habitude ajoutée', habitude });
   } catch (error) {
     res.status(500).json({ error: 'Erreur serveur' });
   }

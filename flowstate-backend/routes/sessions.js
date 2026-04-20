@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
     where: { est_terminee: false, id_utilisateur: req.user.userId }
    });
    if (sessionActive){
-     return res.status(400).json({ error: 'autre session es t deja en cour' });
+     return res.status(400).json({ error: 'autre session es t deja en cours' });
    }
 
     const session = await prisma.sessionFocus.create({
