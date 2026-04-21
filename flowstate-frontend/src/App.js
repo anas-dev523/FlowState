@@ -10,6 +10,7 @@ import UserSpace from './pages/UserSpace';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import UserIntroduction from './pages/UserIntroduction';
+import AppIntroduction from './pages/AppIntroduction'
 function App() {
   return (
     <Router>
@@ -18,6 +19,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/UserSpace" element={<UserSpace />} />
         <Route path="/userIntroduction" element={<UserIntroduction />} />
+        <Route path="/AppIntroduction" element={<AppIntroduction />} />
         <Route path="/ForgotPassword" element={<ForgotPassword/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
