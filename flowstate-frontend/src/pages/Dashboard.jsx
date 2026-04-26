@@ -1,10 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
-
+import { useEffect,useState} from 'react';
+import { getHabitudes,getValidationsToday } from '../services/api';
 function Dashboard() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-
+  const [habits,setHabits]= useState([]);
+  const [done,setDone]=useState([]);
+    useEffect(() => {
+    Promise.all([getHabitudes(), getValidationsToday()])
+        .then(([habitsRes, validationsRes]) => {
+            setHabits(habitsRes.data);
+            setDone(validationsRes.data);
+        })
+        }, [])
+  const percent = habits.length > 0 ? (done.length / habits.length) * 100 : 0;
   return (
     <div style={{ fontFamily: "'Segoe UI', system-ui, sans-serif", backgroundColor: '#fff', minHeight: '100vh' }}>
 
@@ -51,16 +61,19 @@ function Dashboard() {
         <section>
           <h2 style={{ fontSize: '16px', marginBottom: '12px' }}>Résumé de jour :</h2>
           <div
-            onClick={() => navigate('/habitudes')}
+            onClick={() => navigate('/HabitudesDuJour')}
             style={{
               backgroundColor: '#6F7BFF', borderRadius: '12px',
               padding: '16px 20px', color: '#fff', cursor: 'pointer'
             }}>
             <p style={{ fontSize: '13px', marginBottom: '8px' }}>Habitudes terminé :</p>
+            <div style ={{width: '100%',height: '10px',borderRadius: '5px',
+            backgroundColor: 'rgba(255,255,255,0.3)' }}>
             <div style={{
               height: '10px', backgroundColor: '#000',
-              borderRadius: '5px', width: '60%'
+              borderRadius: '5px', width: `${percent}%` 
             }} />
+          </div>
           </div>
         </section>
 
