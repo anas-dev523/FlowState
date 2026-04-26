@@ -32,6 +32,21 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: 'Erreur serveur' });
   }
 });
+// GET /api/habitudes — les habitudes validé aujourd'hui par l'utilisateur
+router.get('/validations/today', async (req, res) => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const validations = await prisma.validationHabitude.findMany({
+      where: { id_utilisateur: req.user.userId, date_validation: today },
+      select: { id_habitude: true }
+    });
+    res.json(validations.map(v => v.id_habitude));
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
 
 // POST /api/habitudes/:id/suivre — l'utilisateur s'abonne a une habitude existante
 router.post('/:id/suivre', async (req, res) => {
@@ -98,7 +113,7 @@ router.delete('/:id', async (req, res) => {
 router.post('/:id/valider', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const { note } = req.body;
+    const { note } = req.body || {};
 
     const habitude = await prisma.habitude.findFirst({
       where: { id_habitude: id, suivis: { some: { id_utilisateur: req.user.userId } } }
@@ -119,6 +134,30 @@ router.post('/:id/valider', async (req, res) => {
 
     res.status(201).json(validation);
   } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+// DELETE /api/habitudes/:id/valider
+router.delete('/:id/valider', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    const habitude = await prisma.habitude.findFirst({
+      where: { id_habitude: id, suivis: { some: { id_utilisateur: req.user.userId } } }
+    });
+    if (!habitude) return res.status(404).json({ error: 'Habitude non trouvée' });
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const deletevalidation = await prisma.validationHabitude.deleteMany({
+      where : { id_habitude: id, id_utilisateur: req.user.userId, date_validation: today }
+    });
+
+    res.json({ message: 'Validation supprimée' });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Erreur serveur' });
   }
 });

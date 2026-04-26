@@ -38,6 +38,8 @@ model Habitude {
   id_habitude      Int       @id @default(autoincrement())
   titre            String    @db.VarChar(255)
   description      String?   @db.Text
+  effets           String?   @db.Text
+  points           Int       @default(0)
   frequence        Frequence @default(quotidienne)
   est_active       Boolean   @default(true)
   date_creation    DateTime  @default(now())

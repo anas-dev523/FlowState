@@ -11,12 +11,16 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import UserIntroduction from './pages/UserIntroduction';
 import AppIntroduction from './pages/AppIntroduction'
+import HabitudesDuJour from './pages/HabitudesDuJour'; 
+import HabitDetails from './pages/HabitDetails';
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Welcome />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/HabitudesDuJour" element={<HabitudesDuJour />} />
+        <Route path="/HabitDetails" element={<HabitDetails/>} />
         <Route path="/UserSpace" element={<UserSpace />} />
         <Route path="/userIntroduction" element={<UserIntroduction />} />
         <Route path="/AppIntroduction" element={<AppIntroduction />} />
