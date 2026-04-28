@@ -2,7 +2,8 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ReturnArrow from "../components/ReturnArrow";
 import InfoBlock from "../components/InfoBlock";
-function HabitDetails(){
+import Button from "../components/Button";
+function HabitDetails({onAdd}){
 const navigate = useNavigate();
 const location = useLocation();
 const habit = location.state?.habit;
@@ -20,6 +21,11 @@ if (!habit) {
         <p>Effets :</p>
         <InfoBlock text={habit.effets} />
         <p>Score FlowState : +{habit.points} points</p>
+        {onAdd && (
+         <Button onClick={() => onAdd(habit.id_habitude)}>
+         Ajouter
+        </Button>
+)}
 
 </div>
     );

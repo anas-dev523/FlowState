@@ -13,12 +13,18 @@ import UserIntroduction from './pages/UserIntroduction';
 import AppIntroduction from './pages/AppIntroduction'
 import HabitudesDuJour from './pages/HabitudesDuJour'; 
 import HabitDetails from './pages/HabitDetails';
+import ConfirmHabit from './pages/ConfirmHabit';
+import HabitAdded from './pages/HabitAdded';
+import SelectHabit from './pages/SelectHabit';
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Welcome />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/ConfirmHabit" element={<ConfirmHabit />} />
+        <Route path="/SelectHabit" element={<SelectHabit />} />
+        <Route path="/HabitAdded" element={<HabitAdded/>} />
         <Route path="/HabitudesDuJour" element={<HabitudesDuJour />} />
         <Route path="/HabitDetails" element={<HabitDetails/>} />
         <Route path="/UserSpace" element={<UserSpace />} />
