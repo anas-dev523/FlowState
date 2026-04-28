@@ -80,11 +80,10 @@ function Dashboard() {
         {/* Actions rapides */}
         <section>
           <h2 style={{ fontSize: '16px', marginBottom: '12px' }}>actions rapides :</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
             {[
               { label: 'Commencer un focus', path: '/focus' },
-              { label: 'Effacer une habitude', path: '/habitudes' },
-              { label: 'Ajouter une habitude', path: '/habitudes/ajouter' },
+              { label: 'Ajouter une habitude', path: '/SelectHabit' },
               { label: 'Vidéo de motivation', path: '/motivation' },
             ].map(({ label, path }) => (
               <div
