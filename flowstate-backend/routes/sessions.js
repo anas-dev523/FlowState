@@ -23,12 +23,18 @@ router.get('/', async (req, res) => {
 // POST /api/sessions - démarrer une session
 router.post('/', async (req, res) => {
   try {
-    const sessionActive = await prisma.sessionFocus.findFirst({
-    where: { est_terminee: false, id_utilisateur: req.user.userId }
-   });
-   if (sessionActive){
-     return res.status(400).json({ error: 'autre session es t deja en cours' });
-   }
+    // Auto-cleanup: ferme les sessions orphelines (tab fermé, endSession qui a échoué...)
+    const activeSessions = await prisma.sessionFocus.findMany({
+      where: { est_terminee: false, id_utilisateur: req.user.userId }
+    });
+    for (const old of activeSessions) {
+      const fin = new Date();
+      const duree_reelle = Math.round((fin - old.debut) / 1000 / 60);
+      await prisma.sessionFocus.update({
+        where: { id_session_focus: old.id_session_focus },
+        data: { fin, duree_reelle, est_terminee: true }
+      });
+    }
 
     const session = await prisma.sessionFocus.create({
       data: {

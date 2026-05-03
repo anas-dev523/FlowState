@@ -7,7 +7,7 @@ import VideoRow from './components/VideoRow';
 import SettingsIcon from './components/SettingsIcon';
 import TrashIcon from './components/TrashIcon';
 import PlusIcon from './components/PlusIcon';
-import HabitSelector from './components/HabitSelect';
+import HabitSelect from './components/HabitSelect';
 import InfoBlock from './components/InfoBlock';
 function DevPage() {
   return (
@@ -63,13 +63,26 @@ function DevPage() {
           <PlusIcon size={24} />
         </div>
       </section>
-      <section>
-        <HabitSelector onConfirm={(selected) => console.log(selected)} />
-      </section>
     <section>
-      <InfoBlock text ="hello"/> 
+      <InfoBlock text ="hello"/>
     </section>
 
+      <section>
+        <h2>HabitSelect</h2>
+        <HabitSelect
+          title="Sport"
+          done={false}
+          onToggle={() => alert('toggle Sport')}
+          onDetails={() => alert('détails Sport')}
+        />
+        <br />
+        <HabitSelect
+          title="Méditation"
+          done={true}
+          onToggle={() => alert('toggle Méditation')}
+          onDetails={() => alert('détails Méditation')}
+        />
+      </section>
 
     </div>
   );
