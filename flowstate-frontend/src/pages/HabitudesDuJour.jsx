@@ -1,16 +1,16 @@
 import HabitSelect from '../components/HabitSelect';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getHabitudes, validerHabitude , devaliderHabitude ,getValidationsToday} from '../services/api';
+import { getHabitudes, validerHabitude, devaliderHabitude, getValidationsToday, unfollowHabitude } from '../services/api';
 import ReturnArrow from '../components/ReturnArrow';
-
+import ConfirmModal from '../components/ConfirmModal';
 function HabitudesDuJour(){
     const navigate =useNavigate();
     const[habits,setHabits]=useState([]);
     const [done,setDone]=useState([]);
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [fetching, setFetching] = useState(true);
+    const [confirmingId, setConfirmingId] = useState(null);
     useEffect(() => {
     Promise.all([getHabitudes(), getValidationsToday()])
         .then(([habitsRes, validationsRes]) => {
@@ -22,22 +22,30 @@ function HabitudesDuJour(){
 }, []);
 
     const handleValider = async (id) => {
-        setLoading(true);
         setError('');
         try {
              if (done.includes(id)){
                 await devaliderHabitude(id);
-                setDone((prev) => prev.filter((x) => x !== id)); 
+                setDone((prev) => prev.filter((x) => x !== id));
                }
             else{
                 await validerHabitude(id);
                 setDone((prev) => [...prev, id]);}
     } catch (err) {
         setError(err.response?.data?.error || 'Erreur');
-    } finally {
-        setLoading(false);
-  }};
-
+    }};
+const handleDelete = (id) => {
+  setConfirmingId(id);
+};
+const confirmDelete = async () => {
+  try {
+    await unfollowHabitude(confirmingId);
+    setHabits(prev => prev.filter(h => h.id_habitude !== confirmingId));
+  } catch (err) {
+    setError(err.response?.data?.error || 'Erreur');
+  }
+  setConfirmingId(null);  
+}
     if(fetching){return (
       <div style={{
         minHeight: '100vh',
@@ -64,6 +72,13 @@ function HabitudesDuJour(){
             marginBottom: '16px',
           }}>{error}</p>
         )} 
+        {confirmingId !== null && (
+  <ConfirmModal
+    message="Supprimer cette habitude de ta liste ?"
+    onConfirm={confirmDelete}
+    onCancel={() => setConfirmingId(null)}
+  />
+)}
         
         <div style={{ position: 'relative', padding: '16px 20px 0' }}>
         <div style={{ position: 'absolute', left: 20, top: 16 }}>
@@ -75,6 +90,7 @@ function HabitudesDuJour(){
             <section key={habit.id_habitude}>
             <HabitSelect
             title ={habit.titre}
+            onDelete={() => handleDelete(habit.id_habitude)}
             done={done.includes(habit.id_habitude)}
             onToggle={()=>handleValider(habit.id_habitude)}
             onDetails={()=>{navigate ("/HabitDetails",{state: {habit }}) }}

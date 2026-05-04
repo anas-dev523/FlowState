@@ -1,8 +1,7 @@
 import HabitGrid from "../components/HabitGrid";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCatalogue } from '../services/api';
-import { getHabitudes } from "../services/api";
+import { getCatalogue, getHabitudes } from '../services/api';
 
 function SelectHabit(){
   const [habits, setHabits] = useState([]);
