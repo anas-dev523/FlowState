@@ -71,6 +71,26 @@ router.post('/:id/suivre', async (req, res) => {
   }
 });
 
+// DELETE /api/habitudes/:id/suivre — l'utilisateur se desabonne d'une habitude 
+router.delete('/:id/suivre', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    const existing = await prisma.suivre.findUnique({
+      where: { id_utilisateur_id_habitude: { id_utilisateur: req.user.userId, id_habitude: id } }
+    });
+    if (!existing) return res.status(404).json({ error: 'Habitude non suivie' });
+
+    await prisma.suivre.delete({
+      where: { id_utilisateur_id_habitude: { id_utilisateur: req.user.userId, id_habitude: id } }
+    });
+
+    res.json({ message: 'Habitude retiree de la liste' });
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
 // PUT /api/habitudes/:id
 router.put('/:id', async (req, res) => {
   try {
@@ -151,8 +171,8 @@ router.delete('/:id/valider', async (req, res) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const deletevalidation = await prisma.validationHabitude.deleteMany({
-      where : { id_habitude: id, id_utilisateur: req.user.userId, date_validation: today }
+    await prisma.validationHabitude.deleteMany({
+      where: { id_habitude: id, id_utilisateur: req.user.userId, date_validation: today }
     });
 
     res.json({ message: 'Validation supprimée' });

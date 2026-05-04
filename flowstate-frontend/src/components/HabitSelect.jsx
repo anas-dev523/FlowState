@@ -1,4 +1,6 @@
-function HabitSelect({ title, done = false, onToggle, onDetails }) {
+import TrashIcon from "./TrashIcon";
+
+function HabitSelect({ title, done = false, onToggle, onDetails,onDelete }) {
   return (
     <div style={{
       display: 'flex',
@@ -19,6 +21,20 @@ function HabitSelect({ title, done = false, onToggle, onDetails }) {
       }}>
         {title}
       </span>
+<button
+       type="button"
+       onClick={onDelete}
+       aria-label="Supprimer"
+       style={{
+       background: 'transparent',
+       border: 'none',
+       cursor: 'pointer',
+       padding: '4px',
+       color: '#fff',
+  }}
+>
+  <TrashIcon size={20} />
+</button>
 
       <button
         type="button"

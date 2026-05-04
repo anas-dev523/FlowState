@@ -44,6 +44,7 @@ export const deleteHabitude = (id) => API.delete(`/habitudes/${id}`);
 export const validerHabitude = (id, data) => API.post(`/habitudes/${id}/valider`, data);
 export const devaliderHabitude =(id) => API.delete(`/habitudes/${id}/valider`);
 export const getValidationsToday = () => API.get('/habitudes/validations/today');
+export const unfollowHabitude = (id) => API.delete(`/habitudes/${id}/suivre`);
 
 // Sessions focus
 export const getSessions = () => API.get('/sessions');

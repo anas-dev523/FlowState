@@ -1,5 +1,4 @@
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ReturnArrow from "../components/ReturnArrow";
 import InfoBlock from "../components/InfoBlock";
 import Button from "../components/Button";
