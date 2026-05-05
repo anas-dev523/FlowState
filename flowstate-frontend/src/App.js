@@ -17,6 +17,7 @@ import ConfirmHabit from './pages/ConfirmHabit';
 import HabitAdded from './pages/HabitAdded';
 import SelectHabit from './pages/SelectHabit';
 import  Focus  from './pages/Focus';
+import Motivation from './pages/Motivation';
 function App() {
   return (
     <Router>
@@ -25,6 +26,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/ConfirmHabit" element={<ConfirmHabit />} />
         <Route path="/Focus" element={<Focus/>} />
+        <Route path="/Motivation" element={<Motivation/>} />
         <Route path="/SelectHabit" element={<SelectHabit />} />
         <Route path="/HabitAdded" element={<HabitAdded/>} />
         <Route path="/HabitudesDuJour" element={<HabitudesDuJour />} />
