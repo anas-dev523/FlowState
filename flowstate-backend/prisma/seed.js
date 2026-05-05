@@ -93,6 +93,26 @@ const habitudes = [
     points: 8
   },
 ];
+const videos = [
+  {
+    titre: 'The Power of Discipline',
+    url: 'g-jwWYX7Jlo',
+    categorie: 'discipline',
+    duree: 10,
+  },
+  {
+    titre: 'MINDSET IS EVERYTHING',
+    url: 'ZtMm0swu5i8',
+    categorie: 'mindset',
+    duree: 15,
+  },
+  {
+    titre: 'BELIEVE IN YOURSELF',
+    url: '26U_seo0a1g',
+    categorie: 'mindset',
+    duree: 8,
+  },
+];
 
 async function main() {
   console.log('Nettoyage des anciennes habitudes...');
@@ -124,6 +144,36 @@ async function main() {
         data: { description: h.description,effets:h.effets,points:h.points  }
       });
       console.log(`  ~ ${h.titre} (mise a jour)`);
+    }
+  }
+
+  console.log('Nettoyage des anciennes videos...');
+
+  const allVideos = await prisma.videoMotivation.findMany();
+  const titresVideosValides = videos.map((v) => v.titre);
+  const videosASupprimer = allVideos.filter((v) => !titresVideosValides.includes(v.titre));
+
+  for (const v of videosASupprimer) {
+    await prisma.visionnageVideo.deleteMany({ where: { id_video: v.id_video } });
+    await prisma.videoMotivation.delete({ where: { id_video: v.id_video } });
+    console.log(`  x ${v.titre} (supprimee)`);
+  }
+
+  console.log('Seeding videos...');
+
+  for (const v of videos) {
+    const existing = await prisma.videoMotivation.findFirst({ where: { titre: v.titre } });
+    if (!existing) {
+      await prisma.videoMotivation.create({
+        data: { titre: v.titre, url: v.url, categorie: v.categorie, duree: v.duree }
+      });
+      console.log(`  + ${v.titre}`);
+    } else {
+      await prisma.videoMotivation.update({
+        where: { id_video: existing.id_video },
+        data: { url: v.url, categorie: v.categorie, duree: v.duree }
+      });
+      console.log(`  ~ ${v.titre} (mise a jour)`);
     }
   }
 
