@@ -55,4 +55,8 @@ export const endSession = (id, data) => API.put(`/sessions/${id}/terminer`, data
 export const getVideos = () => API.get('/videos');
 export const logVisionnage = (id, data) => API.post(`/videos/${id}/visionner`, data);
 
+// Stats
+export const getGlobalStats = () => API.get('/stats/global');
+export const getDailyCompletion = (days=14) => API.get(`/stats/daily-completion?days=${days}`);
+
 export default API;
