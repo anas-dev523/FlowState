@@ -2,11 +2,16 @@ import { useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
 import { useEffect,useState} from 'react';
 import { getHabitudes,getValidationsToday } from '../services/api';
+import { useGlobalStats } from '../hooks/useGlobalStats';
+import { useDailyCompletion } from '../hooks/useDailyCompletion';
+import { ResponsiveContainer, AreaChart, Area } from 'recharts';
 function Dashboard() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [habits,setHabits]= useState([]);
   const [done,setDone]=useState([]);
+  const stats = useGlobalStats();
+  const dailyCompletion = useDailyCompletion(14);
     useEffect(() => {
     Promise.all([getHabitudes(), getValidationsToday()])
         .then(([habitsRes, validationsRes]) => {
@@ -42,17 +47,17 @@ function Dashboard() {
         {/* Statistiques */}
         <section>
           <h2 style={{ fontSize: '16px', marginBottom: '12px' }}>Statistiques :</h2>
-          <div style={{
+          <div onClick={() => navigate("/Statistiques")} style={{
             backgroundColor: '#6F7BFF', borderRadius: '12px',
-            padding: '16px 20px', color: '#fff'
+            padding: '16px 20px', color: '#fff' ,cursor: 'pointer',
           }}>
-            <p style={{ fontSize: '14px', marginBottom: '8px' }}>score : <strong>0</strong></p>
-            <div style={{
-              height: '60px', backgroundColor: 'rgba(255,255,255,0.2)',
-              borderRadius: '8px', display: 'flex', alignItems: 'center',
-              justifyContent: 'center', color: 'rgba(255,255,255,0.6)', fontSize: '13px'
-            }}>
-              Graphique à venir
+            <p style={{ fontSize: '14px', marginBottom: '8px' }}>score : {stats?.score ?? '...'}</p>
+            <div style={{ height: '60px' }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={dailyCompletion} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+                  <Area type="monotone" dataKey="percent" stroke="#fff" fill="hsla(0, 0%, 100%, 0.40)" />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </section>
@@ -68,7 +73,7 @@ function Dashboard() {
             }}>
             <p style={{ fontSize: '13px', marginBottom: '8px' }}>Habitudes terminé :</p>
             <div style ={{width: '100%',height: '10px',borderRadius: '5px',
-            backgroundColor: 'rgba(255,255,255,0.3)' }}>
+            backgroundColor: '#ffffff4d' }}>
             <div style={{
               height: '10px', backgroundColor: '#000',
               borderRadius: '5px', width: `${percent}%` 
