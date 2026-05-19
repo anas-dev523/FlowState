@@ -49,7 +49,7 @@ const confirmDelete = async () => {
     if(fetching){return (
       <div style={{
         minHeight: '100vh',
-        backgroundColor: '#6F7BFF',
+        backgroundColor: '#1B2AD1',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

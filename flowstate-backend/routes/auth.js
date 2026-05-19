@@ -47,7 +47,7 @@ router.post('/register', async (req, res) => {
     res.status(201).json({
       message: 'Compte créé avec succès',
       token,
-      user: { id: user.id_utilisateur, email: user.email, prenom: user.prenom, nom: user.nom,date_creation : user.date_creation }
+      user: { id: user.id_utilisateur,role:user.role ,email: user.email, prenom: user.prenom, nom: user.nom,date_creation : user.date_creation }
     });
 
   } catch (error) {
@@ -84,7 +84,7 @@ router.post('/login', async (req, res) => {
     res.json({
       message: 'Connexion réussie',
       token,
-      user: { id: user.id_utilisateur, email: user.email, prenom: user.prenom, nom: user.nom ,date_creation : user.date_creation}
+      user: { id: user.id_utilisateur,role:user.role ,email: user.email, prenom: user.prenom, nom: user.nom ,date_creation : user.date_creation}
     });
 
   } catch (error) {

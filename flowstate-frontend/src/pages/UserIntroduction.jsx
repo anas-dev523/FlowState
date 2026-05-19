@@ -42,7 +42,7 @@ export default function UserIntroduction() {
     return (
       <div style={{
         minHeight: '100vh',
-        backgroundColor: '#6F7BFF',
+        backgroundColor: '#1B2AD1',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -55,7 +55,7 @@ export default function UserIntroduction() {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#6F7BFF',
+      backgroundColor: '#1B2AD1',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -72,7 +72,7 @@ export default function UserIntroduction() {
         <h2 style={{
           fontSize: '24px',
           fontWeight: '700',
-          color: '#6F7BFF',
+          color: '#1B2AD1',
           textAlign: 'center',
           margin: '0 0 4px 0', 
         }}>
@@ -80,7 +80,7 @@ export default function UserIntroduction() {
         </h2>
         <p style={{
           textAlign: 'center',
-          color: '#999',
+          color: '#555',
           fontSize: '14px',
           margin: '0 0 28px 0',
         }}>

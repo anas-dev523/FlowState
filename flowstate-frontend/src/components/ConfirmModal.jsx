@@ -17,7 +17,7 @@ function ConfirmModal({ message, onConfirm, onCancel }) {
           textAlign: 'center',
         }}
       >
-        <p style={{ fontSize: '15px', color: '#333', marginTop: 0, marginBottom: '20px' }}>
+        <p style={{ fontSize: '15px', color: '#555', marginTop: 0, marginBottom: '20px' }}>
           {message}
         </p>
         <div style={{ display: 'flex', gap: '12px' }}>
@@ -25,7 +25,7 @@ function ConfirmModal({ message, onConfirm, onCancel }) {
             onClick={onCancel}
             style={{
               flex: 1, padding: '10px',
-              backgroundColor: '#f0f0f1', color: '#333', border: 'none',
+              backgroundColor: '#e0e0e0', color: '#555', border: 'none',
               borderRadius: '25px', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit',
             }}
           >

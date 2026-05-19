@@ -7,7 +7,7 @@ function Welcome() {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#6F7BFF',
+      backgroundColor: '#1B2AD1',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',

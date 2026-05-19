@@ -64,7 +64,7 @@ const handleSelectDuration = (duration) => {
         <h1 style={{ fontSize: '32px', fontWeight: '700', margin: 0, color: '#000' }}>
           Mode Focus
         </h1>
-        <p style={{ color: '#999', fontSize: '14px', marginTop: '6px' }}>
+        <p style={{ color: '#555', fontSize: '14px', marginTop: '6px' }}>
           Concentre-toi, accomplis tes objectifs
         </p>
       </div>
@@ -84,7 +84,7 @@ const handleSelectDuration = (duration) => {
                 padding: '8px 18px',
                 borderRadius: '20px',
                 border: 'none',
-                backgroundColor: isSelected ? '#6F7BFF' : '#f0f0f1',
+                backgroundColor: isSelected ? '#1B2AD1' : '#e0e0e0',
                 color: isSelected ? '#fff' : '#555',
                 fontSize: '14px',
                 fontWeight: '600',
@@ -107,7 +107,7 @@ const handleSelectDuration = (duration) => {
           width: '280px',
           height: '280px',
           borderRadius: '50%',
-          border: '3px solid #6F7BFF',
+          border: '3px solid #1B2AD1',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

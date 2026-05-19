@@ -14,7 +14,7 @@ function AuthLayout({ children, logoWidth = 160, showBackArrow = false, onBack }
     }}>
       {/* Bloc bleu */}
       <div style={{
-        backgroundColor: '#6F7BFF',
+        backgroundColor: '#1B2AD1',
         padding: '50px 20px 80px',
         position: 'relative',
         textAlign: 'center'

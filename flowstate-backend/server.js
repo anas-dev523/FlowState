@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { PrismaClient } = require('@prisma/client');
-
+const adminRoutes = require('./routes/admin');
 const authRoutes = require('./routes/auth');
 const habitudesRoutes = require('./routes/habitudes');
 const sessionsRoutes = require('./routes/sessions');
@@ -21,7 +21,7 @@ app.use('/api/habitudes', habitudesRoutes);
 app.use('/api/sessions', sessionsRoutes);
 app.use('/api/videos', videosRoutes);
 app.use('/api/stats', statsRoutes);
-
+app.use('/api/admin',adminRoutes);
 app.get('/', (req, res) => {
   res.json({ message: 'FlowState API is running', status: 'OK', timestamp: new Date().toISOString() });
 });

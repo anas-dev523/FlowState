@@ -3,7 +3,7 @@ function PlusIcon({ size = 24, onClick }) {
     <div onClick={onClick} style={{
       width: size, height: size,
       borderRadius: '50%',
-      backgroundColor: '#000000',
+      backgroundColor: '#000',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       cursor: 'pointer'
     }}>

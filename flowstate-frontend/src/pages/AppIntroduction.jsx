@@ -17,7 +17,7 @@ function AppIntroduction(){
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#6F7BFF',
+      backgroundColor: '#1B2AD1',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -34,7 +34,7 @@ function AppIntroduction(){
         <h2 style={{
           fontSize: '24px',
           fontWeight: '700',
-          color: '#6F7BFF',
+          color: '#1B2AD1',
           textAlign: 'center',
           margin: '0 0 4px 0',
         }}>
@@ -42,7 +42,7 @@ function AppIntroduction(){
         </h2>
         <p style={{
           textAlign: 'center',
-          color: '#999',
+          color: '#555',
           fontSize: '14px',
           margin: '0 0 28px 0',
         }}>
@@ -67,13 +67,13 @@ function AppIntroduction(){
                   gap: '10px',
                   padding: '20px 8px',
                   borderRadius: '16px',
-                  border:  '2px solid #f0f0f1',
-                  backgroundColor: '#ebedf1',
+                  border:  '2px solid #e0e0e0',
+                  backgroundColor: '#e0e0e0',
                   fontFamily: 'inherit',
                 }}
               >
                 <div style ={{
-                    backgroundColor: '#6F7BFF',
+                    backgroundColor: '#1B2AD1',
                     padding: '10px',
                     borderRadius: '10px' ,
                     display: 'flex',
@@ -94,7 +94,7 @@ function AppIntroduction(){
                 <span style={{
                   fontSize: '11px',
                   fontWeight: '400',
-                  color: '#6F7BFF',
+                  color: '#1B2AD1',
                 }}>
                     {feature.description}
                 </span>
