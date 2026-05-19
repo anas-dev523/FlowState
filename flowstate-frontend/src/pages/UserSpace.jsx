@@ -81,13 +81,11 @@ const UserSpace = () => {
       maxWidth: 390,
       margin: "0 auto",
       minHeight: "100vh",
-      background: "#FAFAF8",
-      fontFamily: '"DM Sans", sans-serif',
+      background: "#e0e0e0",
+      fontFamily: "'Segoe UI', system-ui, sans-serif",
       position: "relative",
       overflow: "hidden",
     }}>
-      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
-
       {/* Header */}
       <div style={{
         padding: "16px 20px 0",
@@ -99,7 +97,7 @@ const UserSpace = () => {
           onClick={() => navigate("/dashboard")}
           style={{
             width: 36, height: 36, borderRadius: 12,
-            background: "#F0F0EC",
+            background: "#e0e0e0",
             display: "flex", alignItems: "center", justifyContent: "center",
             cursor: "pointer",
           }}>
@@ -116,7 +114,7 @@ const UserSpace = () => {
         <div style={{ position: "relative" }}>
           <div style={{
             width: 96, height: 96, borderRadius: "50%",
-            background: "#6F7BFF",
+            background: "#1B2AD1",
             display: "flex", alignItems: "center", justifyContent: "center",
             fontSize: 34, fontWeight: 600, color: "#fff",
             letterSpacing: "-0.5px",
@@ -130,7 +128,7 @@ const UserSpace = () => {
           letterSpacing: "-0.4px",
         }}>{form.prenom} {form.nom}</p>
         <p style={{
-          marginTop: 2, fontSize: 13, color: "#8A8A86", fontWeight: 400,
+          marginTop: 2, fontSize: 13, color: "#555", fontWeight: 400,
         }}>Membre depuis {dateExact}</p>
       </div>
 
@@ -151,7 +149,7 @@ const UserSpace = () => {
 
         {/* Error message */}
         {error && (
-          <p style={{ color: "#E05252", fontSize: 13, marginTop: 10, textAlign: "center" }}>
+          <p style={{ color: "#dc2626", fontSize: 13, marginTop: 10, textAlign: "center" }}>
             {error}
           </p>
         )}
@@ -167,11 +165,11 @@ const UserSpace = () => {
             border: "none",
             background: saved
               ? "#22C55E"
-              : "#6F7BFF",
+              : "#1B2AD1",
             color: "#fff",
             fontSize: 15,
             fontWeight: 600,
-            fontFamily: '"DM Sans", sans-serif',
+            fontFamily: "'Segoe UI', system-ui, sans-serif",
             cursor: "pointer",
             letterSpacing: "-0.2px",
             boxShadow: saved
@@ -200,7 +198,7 @@ const UserSpace = () => {
         </div>
 
         {passwordError && (
-          <p style={{ color: "#E05252", fontSize: 13, marginTop: 10, textAlign: "center" }}>{passwordError}</p>
+          <p style={{ color: "#dc2626", fontSize: 13, marginTop: 10, textAlign: "center" }}>{passwordError}</p>
         )}
 
         <button
@@ -215,7 +213,7 @@ const UserSpace = () => {
             color: "#fff",
             fontSize: 15,
             fontWeight: 600,
-            fontFamily: '"DM Sans", sans-serif',
+            fontFamily: "'Segoe UI', system-ui, sans-serif",
             cursor: "pointer",
             letterSpacing: "-0.2px",
             transition: "all 0.3s ease",
@@ -232,12 +230,12 @@ const UserSpace = () => {
             marginTop: 12,
             padding: "16px 0",
             borderRadius: 14,
-            border: "1px solid #E05252",
+            border: "1px solid #dc2626",
             background: "transparent",
-            color: "#E05252",
+            color: "#dc2626",
             fontSize: 15,
             fontWeight: 500,
-            fontFamily: '"DM Sans", sans-serif',
+            fontFamily: "'Segoe UI', system-ui, sans-serif",
             cursor: "pointer",
             letterSpacing: "-0.2px",
           }}
@@ -255,10 +253,10 @@ const UserSpace = () => {
             borderRadius: 14,
             border: "none",
             background: "transparent",
-            color: "#E05252",
+            color: "#dc2626",
             fontSize: 13,
             fontWeight: 400,
-            fontFamily: '"DM Sans", sans-serif',
+            fontFamily: "'Segoe UI', system-ui, sans-serif",
             cursor: "pointer",
             letterSpacing: "-0.2px",
           }}
@@ -282,7 +280,7 @@ const Field = ({ label, value, onChange, type = "text", readOnly, placeholder, a
       <p style={{
         fontSize: 11,
         fontWeight: 500,
-        color: "#8A8A86",
+        color: "#555",
         letterSpacing: "0.3px",
         textTransform: "uppercase",
         marginBottom: 4,
@@ -302,7 +300,7 @@ const Field = ({ label, value, onChange, type = "text", readOnly, placeholder, a
             fontSize: 15,
             color: "#1A1A18",
             fontWeight: 400,
-            fontFamily: '"DM Sans", sans-serif',
+            fontFamily: "'Segoe UI', system-ui, sans-serif",
             width: "100%",
             background: "transparent",
             padding: 0,
@@ -316,7 +314,7 @@ const Field = ({ label, value, onChange, type = "text", readOnly, placeholder, a
 const Divider = () => (
   <div style={{
     height: 1,
-    background: "#F0F0EC",
+    background: "#e0e0e0",
     marginLeft: 20,
     marginRight: 20,
   }} />

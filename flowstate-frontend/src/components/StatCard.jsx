@@ -2,7 +2,7 @@ function StatCard({ value, label }) {
   return (
     <div style={{
       flex: 1,
-      backgroundColor: '#6F7BFF',
+      backgroundColor: '#1B2AD1',
       borderRadius: '12px',
       padding: '16px 12px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.08)',

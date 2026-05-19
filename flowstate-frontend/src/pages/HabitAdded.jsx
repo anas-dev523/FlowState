@@ -4,7 +4,7 @@ function HabitAdded(){
   const navigate = useNavigate();
   return (
 <div style={{
-  backgroundColor: '#6F7BFF',
+  backgroundColor: '#1B2AD1',
   minHeight: '100vh',
   display: 'flex',
   flexDirection: 'column',

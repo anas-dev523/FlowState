@@ -25,7 +25,7 @@ function Dashboard() {
 
       {/* Header */}
       <div style={{
-        backgroundColor: '#6F7BFF', padding: '16px 20px',
+        backgroundColor: '#1B2AD1', padding: '16px 20px',
         display: 'flex', justifyContent: 'space-between', alignItems: 'center'
       }}>
         <Logo width={100} />
@@ -35,7 +35,7 @@ function Dashboard() {
             width: 40, height: 40, borderRadius: '50%', cursor: 'pointer',
             backgroundColor: '#fff', display: 'flex', alignItems: 'center',
             justifyContent: 'center', fontWeight: 700, fontSize: 15,
-            color: '#6F7BFF', flexShrink: 0,
+            color: '#1B2AD1', flexShrink: 0,
           }}
         >
           {`${user.prenom?.[0] || ''}${user.nom?.[0] || ''}`.toUpperCase()}
@@ -48,7 +48,7 @@ function Dashboard() {
         <section>
           <h2 style={{ fontSize: '16px', marginBottom: '12px' }}>Statistiques :</h2>
           <div onClick={() => navigate("/Statistiques")} style={{
-            backgroundColor: '#6F7BFF', borderRadius: '12px',
+            backgroundColor: '#1B2AD1', borderRadius: '12px',
             padding: '16px 20px', color: '#fff' ,cursor: 'pointer',
           }}>
             <p style={{ fontSize: '14px', marginBottom: '8px' }}>score : {stats?.score ?? '...'}</p>
@@ -68,7 +68,7 @@ function Dashboard() {
           <div
             onClick={() => navigate('/HabitudesDuJour')}
             style={{
-              backgroundColor: '#6F7BFF', borderRadius: '12px',
+              backgroundColor: '#1B2AD1', borderRadius: '12px',
               padding: '16px 20px', color: '#fff', cursor: 'pointer'
             }}>
             <p style={{ fontSize: '13px', marginBottom: '8px' }}>Habitudes terminé :</p>
@@ -95,7 +95,7 @@ function Dashboard() {
                 key={label}
                 onClick={() => navigate(path)}
                 style={{
-                  backgroundColor: '#6F7BFF', borderRadius: '12px',
+                  backgroundColor: '#1B2AD1', borderRadius: '12px',
                   padding: '20px 12px', color: '#fff', textAlign: 'center',
                   fontSize: '14px', fontWeight: '500', cursor: 'pointer'
                 }}

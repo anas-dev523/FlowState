@@ -1,7 +1,7 @@
 function InfoBlock({text}){
 return( <div  
  style={{
-            backgroundColor: '#6F7BFF',
+            backgroundColor: '#1B2AD1',
             color: '#ffffff',
             padding: '16px 20px',
             borderRadius: '10px',

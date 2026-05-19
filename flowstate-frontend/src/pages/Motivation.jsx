@@ -111,7 +111,7 @@ function Motivation() {
           </h2>
           <p style={{
             fontSize: '13px',
-            color: '#999',
+            color: '#555',
             margin: 0,
             textTransform: 'uppercase',
             letterSpacing: '0.5px',

@@ -45,7 +45,7 @@ function VideoCard({ titre, url, duree, onClick }) {
         padding: '10px 14px',
       }}>
         <span style={{ fontSize: '14px', fontWeight: '600', color: '#222' }}>{titre}</span>
-        <span style={{ fontSize: '13px', color: '#999' }}>{duree} min</span>
+        <span style={{ fontSize: '13px', color: '#555' }}>{duree} min</span>
       </div>
     </div>
   );

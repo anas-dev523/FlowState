@@ -22,7 +22,11 @@ function Login() {
       const response = await login(formData);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
-      navigate('/dashboard');
+      if (response.data.user.role === 'admin') {
+         navigate('/admin');
+      } else {
+         navigate('/Dashboard');}
+;
     } catch (err) {
       setError(err.response?.data?.error || 'Erreur lors de la connexion');
     } finally {
@@ -56,7 +60,7 @@ function Login() {
         <div style={{ textAlign: 'center', marginTop: '12px'}}>
         <span
             onClick={() => navigate('/ForgotPassword')}
-            style={{ color: '#6F7BFF', textDecoration: 'underline', cursor: 'pointer' }}
+            style={{ color: '#1B2AD1', textDecoration: 'underline', cursor: 'pointer' }}
           >
             mot de passe oublié 
           </span>

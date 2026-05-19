@@ -59,4 +59,17 @@ export const logVisionnage = (id, data) => API.post(`/videos/${id}/visionner`, d
 export const getGlobalStats = () => API.get('/stats/global');
 export const getDailyCompletion = (days=14) => API.get(`/stats/daily-completion?days=${days}`);
 
+// Admin - Habits
+export const adminCreateHabit = (data) => API.post('/admin/habitudes', data);
+export const adminUpdateHabit = (id, data) => API.put(`/admin/habitudes/${id}`, data);
+export const adminDeleteHabit = (id) => API.delete(`/admin/habitudes/${id}`);
+
+// Admin - Videos
+export const adminCreateVideo = (data) => API.post('/admin/videos', data);
+export const adminUpdateVideo = (id, data) => API.put(`/admin/videos/${id}`, data);
+export const adminDeleteVideo = (id) => API.delete(`/admin/videos/${id}`);
+
+// Admin - Stats
+export const adminGetStats = () => API.get('/admin/stats');
+
 export default API;

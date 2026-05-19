@@ -7,7 +7,7 @@ function HabitRow({ name, onSettings, onDelete }) {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      backgroundColor: '#f5f5f5',
+      backgroundColor: '#e0e0e0',
       padding: '14px 16px',
       marginBottom: '8px'
     }}>

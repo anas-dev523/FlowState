@@ -48,8 +48,8 @@ return(
                   gap: '10px',
                   padding: '20px 8px',
                   borderRadius: '16px',
-                  border: on ? '2px solid #6F7BFF' : '2px solid #f0f0f1',
-                  backgroundColor: isExcluded ? '#f0f0f1' : (on ? '#6F7BFF' : '#fff'),
+                  border: on ? '2px solid #1B2AD1' : '2px solid #e0e0e0',
+                  backgroundColor: isExcluded ? '#e0e0e0' : (on ? '#1B2AD1' : '#fff'),
                   cursor: isExcluded ? 'not-allowed' : 'pointer',
                   transition: 'all 0.2s ease',
                   transform: on ? 'scale(1.05)' : 'scale(1)',
@@ -63,7 +63,7 @@ return(
                     <Check size={14} color="#fff" strokeWidth={3} />
                   </div>
                 )}
-                <Icon size={24} color={on ? '#fff' : '#6F7BFF'} strokeWidth={2} />
+                <Icon size={24} color={on ? '#fff' : '#1B2AD1'} strokeWidth={2} />
                 <span style={{
                   fontSize: '12px',
                   fontWeight: '600',
@@ -74,7 +74,7 @@ return(
                   {habit.titre}
                 </span>
                 {isExcluded && (
-  <span style={{ fontSize: '10px', color: '#999' }}>Déjà ajouté</span>
+  <span style={{ fontSize: '10px', color: '#555' }}>Déjà ajouté</span>
 )}
               </button>
             );

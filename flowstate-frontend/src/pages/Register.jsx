@@ -25,22 +25,22 @@ function TermsModal({ onClose }) {
       >
         <h2 style={{ marginTop: 0, color: '#1a1a2e', fontSize: '18px' }}>Conditions d'utilisation</h2>
 
-        <h3 style={{ fontSize: '14px', color: '#333' }}>1. Acceptation des conditions</h3>
+        <h3 style={{ fontSize: '14px', color: '#555' }}>1. Acceptation des conditions</h3>
         <p style={{ fontSize: '13px', color: '#555', lineHeight: '1.6' }}>
           En créant un compte FlowState, vous acceptez les présentes conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser l'application.
         </p>
 
-        <h3 style={{ fontSize: '14px', color: '#333' }}>2. Utilisation du service</h3>
+        <h3 style={{ fontSize: '14px', color: '#555' }}>2. Utilisation du service</h3>
         <p style={{ fontSize: '13px', color: '#555', lineHeight: '1.6' }}>
           FlowState est une application de suivi d'habitudes et de productivité. Vous vous engagez à utiliser le service de manière légale et à ne pas porter atteinte aux droits d'autrui.
         </p>
 
-        <h3 style={{ fontSize: '14px', color: '#333' }}>3. Données personnelles</h3>
+        <h3 style={{ fontSize: '14px', color: '#555' }}>3. Données personnelles</h3>
         <p style={{ fontSize: '13px', color: '#555', lineHeight: '1.6' }}>
           Vos données (nom, prénom, email) sont collectées uniquement pour le fonctionnement de l'application et ne sont pas partagées avec des tiers.
         </p>
 
-        <h3 style={{ fontSize: '14px', color: '#333' }}>4. Responsabilité</h3>
+        <h3 style={{ fontSize: '14px', color: '#555' }}>4. Responsabilité</h3>
         <p style={{ fontSize: '13px', color: '#555', lineHeight: '1.6' }}>
           FlowState ne peut être tenu responsable des interruptions de service ou des pertes de données liées à des causes extérieures.
         </p>
@@ -49,7 +49,7 @@ function TermsModal({ onClose }) {
           onClick={onClose}
           style={{
             marginTop: '16px', width: '100%', padding: '12px',
-            backgroundColor: '#6F7BFF', color: '#fff', border: 'none',
+            backgroundColor: '#1B2AD1', color: '#fff', border: 'none',
             borderRadius: '25px', fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit'
           }}
         >
@@ -147,12 +147,12 @@ function Register() {
             type="checkbox"
             checked={acceptedTerms}
             onChange={(e) => setAcceptedTerms(e.target.checked)}
-            style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#6F7BFF' }}
+            style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#1B2AD1' }}
           />
           J'accepte les{' '}
           <span
             onClick={(e) => { e.preventDefault(); setShowTerms(true); }}
-            style={{ color: '#6F7BFF', textDecoration: 'underline', cursor: 'pointer' }}
+            style={{ color: '#1B2AD1', textDecoration: 'underline', cursor: 'pointer' }}
           >
             conditions d'utilisation
           </span>
@@ -164,7 +164,7 @@ function Register() {
       </form>
 
       <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '14px' }}>
-        <Link to="/login" style={{ color: '#6F7BFF', textDecoration: 'none', fontWeight: '500' }}>
+        <Link to="/login" style={{ color: '#1B2AD1', textDecoration: 'none', fontWeight: '500' }}>
           Deja un compte ? Se connecter
         </Link>
       </p>

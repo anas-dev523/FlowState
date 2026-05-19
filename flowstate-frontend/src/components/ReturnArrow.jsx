@@ -3,7 +3,7 @@ function ReturnArrow({onClick}){
     return(
           <div  onClick={onClick} style={{
             width: 36, height: 36, borderRadius: 12,
-            background: "#F0F0EC",
+            background: "#e0e0e0",
             display: "flex", alignItems: "center", justifyContent: "center",
             cursor: "pointer",
           }}>  

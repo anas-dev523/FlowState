@@ -55,7 +55,7 @@ function Statistiques() {
         <XAxis dataKey="date" />
         <YAxis />
         <Tooltip />
-        <Area type="monotone" dataKey="percent" stroke="#6F7BFF" fill="#6F7BFF" />
+        <Area type="monotone" dataKey="percent" stroke="#1B2AD1" fill="#1B2AD1" />
       </AreaChart>
       </ResponsiveContainer>
 
@@ -63,8 +63,8 @@ function Statistiques() {
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
           <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
-            <Cell fill="#6F7BFF" />
-            <Cell fill="#cfc7c7" />
+            <Cell fill="#1B2AD1" />
+            <Cell fill="#e0e0e0" />
           </Pie>
           <Tooltip />
           <Legend />

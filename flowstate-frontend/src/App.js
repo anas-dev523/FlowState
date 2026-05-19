@@ -19,11 +19,17 @@ import SelectHabit from './pages/SelectHabit';
 import  Focus  from './pages/Focus';
 import Motivation from './pages/Motivation';
 import Statistiques from './pages/Statistiques';
+import Admin from './pages/Admin';
+import AdminRoute from './components/AdminRoute';
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Welcome />} />
+        <Route path="/admin" element={
+        <AdminRoute>
+        <Admin />
+        </AdminRoute>} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/ConfirmHabit" element={<ConfirmHabit />} />
         <Route path="/Focus" element={<Focus/>} />

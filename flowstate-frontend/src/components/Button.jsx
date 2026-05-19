@@ -15,19 +15,19 @@ function Button({ children, onClick, type = 'button', variant = 'filled', disabl
     filled: {
       ...base,
       border: 'none',
-      backgroundColor: '#6F7BFF',
+      backgroundColor: '#1B2AD1',
       color: '#ffffff'
     },
     outline: {
       ...base,
-      border: '2px solid #6F7BFF',
+      border: '2px solid #1B2AD1',
       backgroundColor: 'transparent',
-      color: '#6F7BFF'
+      color: '#1B2AD1'
     },
     dark: {
       ...base,
       border:'none',
-      backgroundColor: '#000000',
+      backgroundColor: '#000',
       color :'#ffffff'
     }
   };

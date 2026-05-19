@@ -13,6 +13,10 @@ enum Frequence {
   hebdomadaire
   mensuelle
 }
+enum Role{
+  user 
+  admin
+}
 
 model Utilisateur {
   id_utilisateur   Int      @id @default(autoincrement())
@@ -24,7 +28,7 @@ model Utilisateur {
   date_mise_a_jour DateTime @updatedAt
   reset_token      String?   
   reset_token_expiry DateTime?
-
+  role Role @default(user)
   suivis             Suivre[]
   validations        ValidationHabitude[]
   scores_journaliers ScoreJournalier[]
