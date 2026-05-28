@@ -109,9 +109,7 @@ function Register() {
         prenom: formData.prenom,
         nom: formData.nom
       });
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      navigate('/AppIntroduction');
+      navigate('/verify-email');
     } catch (err) {
       setError(err.response?.data?.error || "Erreur lors de l'inscription");
     } finally {

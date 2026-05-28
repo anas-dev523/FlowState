@@ -33,22 +33,28 @@ router.post('/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const verificationToken = crypto.randomBytes(32).toString('hex');
 
-    const user = await prisma.utilisateur.create({
-      data: { email, mot_de_passe: hashedPassword, prenom, nom }
+    await prisma.utilisateur.create({
+      data: { email, mot_de_passe: hashedPassword, prenom, nom, verification_token: verificationToken }
     });
 
-    const token = jwt.sign(
-      { userId: user.id_utilisateur, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    res.status(201).json({
-      message: 'Compte créé avec succès',
-      token,
-      user: { id: user.id_utilisateur,role:user.role ,email: user.email, prenom: user.prenom, nom: user.nom,date_creation : user.date_creation }
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
     });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Confirme ton adresse email FlowState',
+      html: `<p>Bonjour ${prenom},</p>
+             <p>Clique sur ce lien pour activer ton compte :</p>
+             <a href="http://localhost:3000/verify-email?token=${verificationToken}">Activer mon compte</a>
+             <p>Ce lien expire dans 24h.</p>`
+    });
+
+    res.status(201).json({ message: 'Compte créé. Vérifie ta boîte mail pour activer ton compte.' });
 
   } catch (error) {
     console.error('Erreur inscription:', error);
@@ -75,16 +81,20 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
     }
 
+    if (!user.email_verified) {
+      return res.status(403).json({ error: 'Compte non vérifié. Vérifie ta boîte mail.' });
+    }
+
     const token = jwt.sign(
       { userId: user.id_utilisateur, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
 
+    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
     res.json({
       message: 'Connexion réussie',
-      token,
-      user: { id: user.id_utilisateur,role:user.role ,email: user.email, prenom: user.prenom, nom: user.nom ,date_creation : user.date_creation}
+      user: { id: user.id_utilisateur, role: user.role, email: user.email, prenom: user.prenom, nom: user.nom, date_creation: user.date_creation }
     });
 
   } catch (error) {
@@ -130,7 +140,7 @@ router.put('/password', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: 'Tous les champs sont requis' });
     }
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/;
     if (!passwordRegex.test(nouveauPassword)) {
       return res.status(400).json({ error: 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial' });
     }
@@ -166,6 +176,36 @@ router.delete('/account', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Erreur suppression compte:', error);
     res.status(500).json({ error: 'Erreur serveur lors de la suppression du compte' });
+  }
+});
+// POST /api/auth/Logout
+router.post('/Logout', async (req, res) => {
+  try {
+    res.clearCookie('token');
+    res.json({ message: 'Compte deconnecté avec succès' });
+  } catch (error) {
+    console.error('Erreur deconnexion du compte:', error);
+    res.status(500).json({ error: 'Erreur serveur lors de la deconnexion du compte' });
+  }
+});
+
+// GET /api/auth/verify-email?token=...
+router.get('/verify-email', async (req, res) => {
+  try {
+    const { token } = req.query;
+    if (!token) return res.status(400).json({ error: 'Token manquant' });
+
+    const user = await prisma.utilisateur.findFirst({ where: { verification_token: token } });
+    if (!user) return res.status(400).json({ error: 'Token invalide' });
+
+    await prisma.utilisateur.update({
+      where: { id_utilisateur: user.id_utilisateur },
+      data: { email_verified: true, verification_token: null }
+    });
+
+    res.json({ message: 'Email vérifié avec succès' });
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 

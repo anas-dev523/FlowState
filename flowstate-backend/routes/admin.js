@@ -24,7 +24,7 @@ router.post('/habitudes', async (req, res) => {
 //PUT /api/admin/habitudes/:id
 router.put('/habitudes/:id', async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     const { titre, description, effets, points } = req.body;
     const habitude = await prisma.habitude.update({
       where: { id_habitude: id },
@@ -41,7 +41,7 @@ router.put('/habitudes/:id', async (req, res) => {
 //DELETE /api/admin/habitudes/:id
 router.delete('/habitudes/:id', async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     await prisma.habitude.delete({ where: { id_habitude: id } });
     res.json({ message: 'Habitude retirée' });
   } catch (error) {
@@ -70,7 +70,7 @@ router.post('/videos', async (req, res) => {
 // PUT /api/admin/videos/:id
 router.put('/videos/:id', async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     const { titre, url, categorie, duree } = req.body;
     const video = await prisma.videoMotivation.update({
       where: { id_video: id },
@@ -86,7 +86,7 @@ router.put('/videos/:id', async (req, res) => {
 // DELETE /api/admin/videos/:id
 router.delete('/videos/:id', async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     await prisma.videoMotivation.delete({ where: { id_video: id } });
     res.json({ message: 'Vidéo retirée' });
   } catch (error) {

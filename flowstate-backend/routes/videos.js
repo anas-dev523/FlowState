@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 // POST /api/videos/:id/visionner - enregistrer un visionnage (auth required)
 router.post('/:id/visionner', authMiddleware, async (req, res) => {
   try {
-    const id_video = parseInt(req.params.id);
+    const id_video = req.params.id;
     const { duree_visionnee } = req.body;
 
     const video = await prisma.videoMotivation.findUnique({ where: { id_video } });

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../services/api';
+import { login, getHabitudes } from '../services/api';
 import AuthLayout from '../components/AuthLayout';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -20,13 +20,17 @@ function Login() {
     setLoading(true);
     try {
       const response = await login(formData);
-      localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       if (response.data.user.role === 'admin') {
-         navigate('/admin');
+        navigate('/admin');
       } else {
-         navigate('/Dashboard');}
-;
+        const habitudes = await getHabitudes();
+        if (habitudes.data.length === 0) {
+          navigate('/AppIntroduction');
+        } else {
+          navigate('/Dashboard');
+        }
+      }
     } catch (err) {
       setError(err.response?.data?.error || 'Erreur lors de la connexion');
     } finally {

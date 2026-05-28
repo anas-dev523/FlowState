@@ -9,22 +9,28 @@ function Motivation() {
 
   const videos = [
     {
-      titre: 'The Power of Discipline',
-      url: 'g-jwWYX7Jlo',
-      categorie: 'discipline',
-      duree: 10,
+      titre: '6 idées reçues sur la dépression',
+      url: 'KMNXqj3QmxU',
+      categorie: 'santé mentale',
+      duree: 12,
     },
     {
-      titre: 'MINDSET IS EVERYTHING',
-      url: 'ZtMm0swu5i8',
-      categorie: 'mindset',
-      duree: 15,
+      titre: 'Les parcours en santé mentale',
+      url: 'Lh7WZe7CaD4',
+      categorie: 'bien-être',
+      duree: 4,
     },
     {
-      titre: 'BELIEVE IN YOURSELF',
-      url: '26U_seo0a1g',
-      categorie: 'mindset',
+      titre: 'Michèle Bernier se confie sur sa dépression',
+      url: 'DSFa3Bu0ESo',
+      categorie: 'témoignage',
       duree: 8,
+    },
+    {
+      titre: 'Santé mentale, comportements sociaux et stress',
+      url: 'yq2XmeB3740',
+      categorie: 'psychologie',
+      duree: 20,
     },
   ];
 

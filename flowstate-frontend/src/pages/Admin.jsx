@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   adminGetStats, getCatalogue, getVideos,
   adminCreateHabit, adminUpdateHabit, adminDeleteHabit,
-  adminCreateVideo, adminUpdateVideo, adminDeleteVideo
+  adminCreateVideo, adminUpdateVideo, adminDeleteVideo,logout
 } from '../services/api';
 import ConfirmModal from '../components/ConfirmModal';
 
@@ -130,8 +130,7 @@ function Admin() {
         </h1>
         <button
           onClick={() => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
+            logout();
             navigate('/login');
           }}
           style={secondaryBtnStyle}
@@ -282,8 +281,6 @@ function Admin() {
                     <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#000', margin: '0 0 6px 0', lineHeight: 1.3 }}>{v.titre}</h3>
                     <p style={{ fontSize: '12px', color: '#555', margin: '0 0 12px 0' }}>
                       {v.categorie && <span style={{ color: '#6F7BFF', fontWeight: 600 }}>{v.categorie}</span>}
-                      {v.categorie && v.duree && ' · '}
-                      {v.duree && `${v.duree} min`}
                     </p>
                     <div style={cardActionsStyle}>
                       <button style={editBtnStyle} onClick={() => startEditVideo(v)}>Modifier</button>

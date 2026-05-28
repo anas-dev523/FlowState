@@ -14,32 +14,35 @@ enum Frequence {
   mensuelle
 }
 enum Role{
-  user 
+  user
   admin
 }
 
 model Utilisateur {
-  id_utilisateur   Int      @id @default(autoincrement())
+  id_utilisateur   String   @id @default(uuid())
   prenom           String   @db.VarChar(50)
   nom              String   @db.VarChar(50)
   email            String   @unique @db.VarChar(254)
   mot_de_passe     String   @db.VarChar(255)
   date_creation    DateTime @default(now())
   date_mise_a_jour DateTime @updatedAt
-  reset_token      String?   
+  reset_token        String?
   reset_token_expiry DateTime?
+  email_verified     Boolean  @default(false)
+  verification_token String?
   role Role @default(user)
   suivis             Suivre[]
   validations        ValidationHabitude[]
   scores_journaliers ScoreJournalier[]
   sessions_focus     SessionFocus[]
   visionnages_video  VisionnageVideo[]
+  statistiques       Statistiques?
 
   @@map("utilisateurs")
 }
 
 model Habitude {
-  id_habitude      Int       @id @default(autoincrement())
+  id_habitude      String    @id @default(uuid())
   titre            String    @db.VarChar(255)
   description      String?   @db.Text
   effets           String?   @db.Text
@@ -56,8 +59,8 @@ model Habitude {
 }
 
 model Suivre {
-  id_utilisateur Int
-  id_habitude    Int
+  id_utilisateur String
+  id_habitude    String
 
   utilisateur Utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
   habitude    Habitude    @relation(fields: [id_habitude], references: [id_habitude], onDelete: Cascade)
@@ -67,9 +70,9 @@ model Suivre {
 }
 
 model ValidationHabitude {
-  id_validation   Int      @id @default(autoincrement())
-  id_utilisateur  Int
-  id_habitude     Int
+  id_validation   String   @id @default(uuid())
+  id_utilisateur  String
+  id_habitude     String
   date_validation DateTime @db.Date
   est_validee     Boolean  @default(false)
   note            Int?
@@ -82,8 +85,8 @@ model ValidationHabitude {
 }
 
 model ScoreJournalier {
-  id_score       Int      @id @default(autoincrement())
-  id_utilisateur Int
+  id_score       String   @id @default(uuid())
+  id_utilisateur String
   date           DateTime @db.Date
   score          Int      @default(0)
   details        Json?
@@ -95,8 +98,8 @@ model ScoreJournalier {
 }
 
 model SessionFocus {
-  id_session_focus Int       @id @default(autoincrement())
-  id_utilisateur   Int
+  id_session_focus String    @id @default(uuid())
+  id_utilisateur   String
   debut            DateTime
   fin              DateTime?
   duree_reelle     Int?
@@ -108,7 +111,7 @@ model SessionFocus {
 }
 
 model VideoMotivation {
-  id_video      Int      @id @default(autoincrement())
+  id_video      String   @id @default(uuid())
   titre         String   @db.VarChar(255)
   url           String   @db.VarChar(2048)
   categorie     String?  @db.VarChar(100)
@@ -120,10 +123,25 @@ model VideoMotivation {
   @@map("videos_motivation")
 }
 
+model Statistiques {
+  id_stats              String    @id @default(uuid())
+  id_utilisateur        String    @unique
+  debut                 DateTime? @db.Date
+  nb_habitudes_actives  Int       @default(0)
+  nb_validations        Int       @default(0)
+  score_total           Int       @default(0)
+  total_minutes_focus   Int       @default(0)
+  date_mise_a_jour      DateTime  @updatedAt
+
+  utilisateur Utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
+
+  @@map("statistiques")
+}
+
 model VisionnageVideo {
-  id_visionnage   Int      @id @default(autoincrement())
-  id_utilisateur  Int
-  id_video        Int
+  id_visionnage   String   @id @default(uuid())
+  id_utilisateur  String
+  id_video        String
   date_visionnage DateTime @default(now())
   duree_visionnee Int?
 

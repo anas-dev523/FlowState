@@ -1,23 +1,35 @@
+-- CreateEnum
+CREATE TYPE "Frequence" AS ENUM ('quotidienne', 'hebdomadaire', 'mensuelle');
+
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('user', 'admin');
+
 -- CreateTable
 CREATE TABLE "utilisateurs" (
-    "id_utilisateur" CHAR(36) NOT NULL,
+    "id_utilisateur" TEXT NOT NULL,
     "prenom" VARCHAR(50) NOT NULL,
     "nom" VARCHAR(50) NOT NULL,
-    "email" VARCHAR(120) NOT NULL,
+    "email" VARCHAR(254) NOT NULL,
     "mot_de_passe" VARCHAR(255) NOT NULL,
     "date_creation" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "date_mise_a_jour" TIMESTAMP(3) NOT NULL,
+    "reset_token" TEXT,
+    "reset_token_expiry" TIMESTAMP(3),
+    "email_verified" BOOLEAN NOT NULL DEFAULT false,
+    "verification_token" TEXT,
+    "role" "Role" NOT NULL DEFAULT 'user',
 
     CONSTRAINT "utilisateurs_pkey" PRIMARY KEY ("id_utilisateur")
 );
 
 -- CreateTable
 CREATE TABLE "habitudes" (
-    "id_habitude" SERIAL NOT NULL,
-    "id_utilisateur" CHAR(36) NOT NULL,
-    "titre" VARCHAR(150) NOT NULL,
+    "id_habitude" TEXT NOT NULL,
+    "titre" VARCHAR(255) NOT NULL,
     "description" TEXT,
-    "frequence" VARCHAR(32) NOT NULL DEFAULT 'quotidienne',
+    "effets" TEXT,
+    "points" INTEGER NOT NULL DEFAULT 0,
+    "frequence" "Frequence" NOT NULL DEFAULT 'quotidienne',
     "est_active" BOOLEAN NOT NULL DEFAULT true,
     "date_creation" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "date_mise_a_jour" TIMESTAMP(3) NOT NULL,
@@ -26,44 +38,52 @@ CREATE TABLE "habitudes" (
 );
 
 -- CreateTable
+CREATE TABLE "suivre" (
+    "id_utilisateur" TEXT NOT NULL,
+    "id_habitude" TEXT NOT NULL,
+
+    CONSTRAINT "suivre_pkey" PRIMARY KEY ("id_utilisateur","id_habitude")
+);
+
+-- CreateTable
 CREATE TABLE "validations_habitude" (
-    "id_validation" SERIAL NOT NULL,
-    "id_habitude" INTEGER NOT NULL,
+    "id_validation" TEXT NOT NULL,
+    "id_utilisateur" TEXT NOT NULL,
+    "id_habitude" TEXT NOT NULL,
     "date_validation" DATE NOT NULL,
-    "statut" VARCHAR(32) NOT NULL DEFAULT 'validee',
-    "note" VARCHAR(500),
+    "est_validee" BOOLEAN NOT NULL DEFAULT false,
+    "note" INTEGER,
     "date_creation" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "validations_habitude_pkey" PRIMARY KEY ("id_validation")
 );
 
 -- CreateTable
-CREATE TABLE "series_habitude" (
-    "id_serie" SERIAL NOT NULL,
-    "id_habitude" INTEGER NOT NULL,
-    "streak_courant" INTEGER NOT NULL DEFAULT 0,
-    "meilleur_streak" INTEGER NOT NULL DEFAULT 0,
-    "derniere_date_validee" DATE,
+CREATE TABLE "score_journalier" (
+    "id_score" TEXT NOT NULL,
+    "id_utilisateur" TEXT NOT NULL,
+    "date" DATE NOT NULL,
+    "score" INTEGER NOT NULL DEFAULT 0,
+    "details" JSONB,
 
-    CONSTRAINT "series_habitude_pkey" PRIMARY KEY ("id_serie")
+    CONSTRAINT "score_journalier_pkey" PRIMARY KEY ("id_score")
 );
 
 -- CreateTable
 CREATE TABLE "sessions_focus" (
-    "id_session_focus" SERIAL NOT NULL,
-    "id_utilisateur" CHAR(36) NOT NULL,
+    "id_session_focus" TEXT NOT NULL,
+    "id_utilisateur" TEXT NOT NULL,
     "debut" TIMESTAMP(3) NOT NULL,
     "fin" TIMESTAMP(3),
-    "duree_prevue" INTEGER,
     "duree_reelle" INTEGER,
-    "statut" VARCHAR(32) NOT NULL DEFAULT 'en_cours',
+    "est_terminee" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "sessions_focus_pkey" PRIMARY KEY ("id_session_focus")
 );
 
 -- CreateTable
 CREATE TABLE "videos_motivation" (
-    "id_video" SERIAL NOT NULL,
+    "id_video" TEXT NOT NULL,
     "titre" VARCHAR(255) NOT NULL,
     "url" VARCHAR(2048) NOT NULL,
     "categorie" VARCHAR(100),
@@ -75,9 +95,9 @@ CREATE TABLE "videos_motivation" (
 
 -- CreateTable
 CREATE TABLE "visionnages_video" (
-    "id_visionnage" SERIAL NOT NULL,
-    "id_utilisateur" CHAR(36) NOT NULL,
-    "id_video" INTEGER NOT NULL,
+    "id_visionnage" TEXT NOT NULL,
+    "id_utilisateur" TEXT NOT NULL,
+    "id_video" TEXT NOT NULL,
     "date_visionnage" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "duree_visionnee" INTEGER,
 
@@ -88,16 +108,22 @@ CREATE TABLE "visionnages_video" (
 CREATE UNIQUE INDEX "utilisateurs_email_key" ON "utilisateurs"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "series_habitude_id_habitude_key" ON "series_habitude"("id_habitude");
+CREATE UNIQUE INDEX "score_journalier_id_utilisateur_date_key" ON "score_journalier"("id_utilisateur", "date");
 
 -- AddForeignKey
-ALTER TABLE "habitudes" ADD CONSTRAINT "habitudes_id_utilisateur_fkey" FOREIGN KEY ("id_utilisateur") REFERENCES "utilisateurs"("id_utilisateur") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "suivre" ADD CONSTRAINT "suivre_id_utilisateur_fkey" FOREIGN KEY ("id_utilisateur") REFERENCES "utilisateurs"("id_utilisateur") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "suivre" ADD CONSTRAINT "suivre_id_habitude_fkey" FOREIGN KEY ("id_habitude") REFERENCES "habitudes"("id_habitude") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "validations_habitude" ADD CONSTRAINT "validations_habitude_id_utilisateur_fkey" FOREIGN KEY ("id_utilisateur") REFERENCES "utilisateurs"("id_utilisateur") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "validations_habitude" ADD CONSTRAINT "validations_habitude_id_habitude_fkey" FOREIGN KEY ("id_habitude") REFERENCES "habitudes"("id_habitude") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "series_habitude" ADD CONSTRAINT "series_habitude_id_habitude_fkey" FOREIGN KEY ("id_habitude") REFERENCES "habitudes"("id_habitude") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "score_journalier" ADD CONSTRAINT "score_journalier_id_utilisateur_fkey" FOREIGN KEY ("id_utilisateur") REFERENCES "utilisateurs"("id_utilisateur") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "sessions_focus" ADD CONSTRAINT "sessions_focus_id_utilisateur_fkey" FOREIGN KEY ("id_utilisateur") REFERENCES "utilisateurs"("id_utilisateur") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -8,13 +8,15 @@ const habitudesRoutes = require('./routes/habitudes');
 const sessionsRoutes = require('./routes/sessions');
 const videosRoutes = require('./routes/videos');
 const statsRoutes = require('./routes/stats');
+const cookieParser = require('cookie-parser');
 
 const prisma = new PrismaClient();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({origin:'http://localhost:3000'}));
+app.use(cors({origin:'http://localhost:3000',credentials:true}));
 app.use(express.json());
+app.use(cookieParser())
 
 app.use('/api/auth', authRoutes);
 app.use('/api/habitudes', habitudesRoutes);

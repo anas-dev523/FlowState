@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { updateProfile, updatePassword, deleteAccount } from "../services/api";
+import { updateProfile, updatePassword, deleteAccount, logout } from "../services/api";
+import ConfirmModal from "../components/ConfirmModal";
 
 const UserSpace = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const UserSpace = () => {
   });
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const [passwordForm, setPasswordForm] = useState({ ancienPassword: "", nouveauPassword: "", confirmer: "" });
 
@@ -59,16 +61,15 @@ const UserSpace = () => {
     if (!window.confirm("Es-tu sûr de vouloir supprimer ton compte ? Cette action est irréversible.")) return;
     try {
       await deleteAccount();
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+      logout();
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.error || "Erreur lors de la suppression du compte");
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    await logout();
     localStorage.removeItem("user");
     navigate("/");
   };
@@ -77,6 +78,7 @@ const UserSpace = () => {
   const date = new Date(storedUser.date_creation)
   const dateExact = date.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
   return (
+    <>
     <div style={{
       maxWidth: 390,
       margin: "0 auto",
@@ -224,7 +226,7 @@ const UserSpace = () => {
 
         {/* Logout */}
         <button
-          onClick={handleLogout}
+          onClick={() => setShowLogoutConfirm(true)}
           style={{
             width: "100%",
             marginTop: 12,
@@ -265,6 +267,14 @@ const UserSpace = () => {
         </button>
       </div>
     </div>
+    {showLogoutConfirm && (
+      <ConfirmModal
+        message="Tu vas être déconnecté. Confirmer ?"
+        onConfirm={handleLogout}
+        onCancel={() => setShowLogoutConfirm(false)}
+      />
+    )}
+    </>
   );
 };
 

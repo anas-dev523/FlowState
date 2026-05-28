@@ -1,7 +1,10 @@
 import Button from '../components/Button';
 import {useEffect, useState} from 'react';
 import { startSession, endSession } from '../services/api';
+import { useNavigate } from 'react-router-dom';
+import ReturnArrow from '../components/ReturnArrow';
 function Focus() {
+const navigate = useNavigate();
 const [startTime,setStartTime]=useState(25);
 const [timeLeft,setTimeLeft]=useState(startTime*60);
 const [isRunning,setIsRunning]=useState(false);
@@ -59,6 +62,7 @@ const handleSelectDuration = (duration) => {
       padding: '40px 20px',
       fontFamily: "'Segoe UI', system-ui, sans-serif",
     }}>
+      <ReturnArrow onClick={() => navigate('/Dashboard')} />
 
       <div style={{ textAlign: 'center', marginBottom: '32px' }}>
         <h1 style={{ fontSize: '32px', fontWeight: '700', margin: 0, color: '#000' }}>

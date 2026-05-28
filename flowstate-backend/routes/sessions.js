@@ -1,6 +1,7 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const authMiddleware = require('../middleware/auth');
+const { updateDailyScore, updateStatistiques } = require('../utils/score');
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -51,7 +52,7 @@ router.post('/', async (req, res) => {
 // PUT /api/sessions/:id/terminer
 router.put('/:id/terminer', async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
 
     const session = await prisma.sessionFocus.findFirst({
       where: { id_session_focus: id, id_utilisateur: req.user.userId }
@@ -65,6 +66,10 @@ router.put('/:id/terminer', async (req, res) => {
       where: { id_session_focus: id },
       data: { fin, duree_reelle, est_terminee: true }
     });
+
+    await updateDailyScore(prisma, req.user.userId, fin);
+    await updateStatistiques(prisma, req.user.userId);
+
     res.json(updated);
   } catch (error) {
     res.status(500).json({ error: 'Erreur serveur' });
