@@ -1,11 +1,13 @@
 // Middleware de vérification du token JWT
 
 const jwt = require('jsonwebtoken');
+const { PrismaClient } = require('@prisma/client');
 
-const authMiddleware = (req, res, next) => {
+const prisma = new PrismaClient();
+
+const authMiddleware = async (req, res, next) => {
   try {
-    // Récupérer le token depuis le header Authorization
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = req.cookies.token;
 
     if (!token) {
       return res.status(401).json({
@@ -13,13 +15,13 @@ const authMiddleware = (req, res, next) => {
       });
     }
 
-    // Vérifier et décoder le token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Ajouter les infos de l'utilisateur à la requête
+    const user = await prisma.utilisateur.findUnique({ where: { id_utilisateur: decoded.userId } });
+    if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
+
     req.user = decoded;
 
-    // Continuer vers la route suivante
     next();
 
   } catch (error) {

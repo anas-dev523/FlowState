@@ -2,6 +2,7 @@ import HabitGrid from "../components/HabitGrid";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCatalogue, getHabitudes } from '../services/api';
+import ReturnArrow from '../components/ReturnArrow';
 
 function SelectHabit(){
   const [habits, setHabits] = useState([]);
@@ -57,6 +58,7 @@ if (fetching) {
         maxWidth: '580px',
         padding: '40px 32px',
       }}>
+        <ReturnArrow onClick={() => navigate('/Dashboard')} />
         <h2 style={{
           fontSize: '24px',
           fontWeight: '700',

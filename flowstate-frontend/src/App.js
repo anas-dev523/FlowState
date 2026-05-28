@@ -21,6 +21,7 @@ import Motivation from './pages/Motivation';
 import Statistiques from './pages/Statistiques';
 import Admin from './pages/Admin';
 import AdminRoute from './components/AdminRoute';
+import VerifyEmail from './pages/VerifyEmail';
 function App() {
   return (
     <Router>
@@ -31,6 +32,7 @@ function App() {
         <Admin />
         </AdminRoute>} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/ConfirmHabit" element={<ConfirmHabit />} />
         <Route path="/Focus" element={<Focus/>} />
         <Route path="/Statistiques" element={<Statistiques/>} />

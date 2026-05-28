@@ -1,24 +1,15 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api'
+  baseURL: 'http://localhost:5001/api',
+  withCredentials: true
 });
 
-// Intercepteur : ajoute automatiquement le token JWT a chaque requete
-API.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
 
 API.interceptors.response.use(
   (response) => response,
   (error)=>{
     if (error.response?.status === 401){
-    localStorage.removeItem("token");
-    localStorage.removeItem("user") ;
     window.location.href = '/login';
     }
     return Promise.reject(error);
@@ -33,14 +24,12 @@ export const updatePassword = (data) => API.put('/auth/password', data);
 export const deleteAccount = () => API.delete('/auth/account');
 export const forgotPassword  = (data) => API.post('/auth/forgot-password',data);
 export const resetPassword  = (data) => API.post('/auth/reset-password',data);
-
+export const logout = () => API.post('/auth/Logout');
+export const verifyEmail = (token) => API.get(`/auth/verify-email?token=${token}`);
 // Habitudes
 export const getCatalogue = () => API.get('/habitudes/catalogue');
 export const getHabitudes = () => API.get('/habitudes');
-export const createHabitude = (data) => API.post('/habitudes', data);
 export const suivreHabitude = (id) => API.post(`/habitudes/${id}/suivre`);
-export const updateHabitude = (id, data) => API.put(`/habitudes/${id}`, data);
-export const deleteHabitude = (id) => API.delete(`/habitudes/${id}`);
 export const validerHabitude = (id, data) => API.post(`/habitudes/${id}/valider`, data);
 export const devaliderHabitude =(id) => API.delete(`/habitudes/${id}/valider`);
 export const getValidationsToday = () => API.get('/habitudes/validations/today');
@@ -53,7 +42,6 @@ export const endSession = (id, data) => API.put(`/sessions/${id}/terminer`, data
 
 // Vidéos
 export const getVideos = () => API.get('/videos');
-export const logVisionnage = (id, data) => API.post(`/videos/${id}/visionner`, data);
 
 // Stats
 export const getGlobalStats = () => API.get('/stats/global');

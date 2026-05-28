@@ -7,88 +7,23 @@ const prisma = new PrismaClient();
 
 router.use(authMiddleware);
 
-// bonus de score selon la duree reelle d'une session focus terminee
-function bonusFocus(dureeMinutes) {
-  if (dureeMinutes <= 20) return 1;        
-  if (dureeMinutes <= 35) return 2;        
-  if (dureeMinutes <= 50) return 2;        
-  return 3;                                // 60 min ou plus
-}
-
-// GET /api/stats/global — calcul du score global + stats focus
+// GET /api/stats/global — lecture depuis la table statistiques
 router.get('/global', async (req, res) => {
   try {
     const userId = req.user.userId;
 
-    // Habitudes suivies 
-    const suivis = await prisma.suivre.findMany({
-      where: { id_utilisateur: userId },
-      include: { habitude: true },
-    });
+    const stats = await prisma.statistiques.findUnique({ where: { id_utilisateur: userId } });
 
-    //Toutes les validations de l'utilisateur
-    const validations = await prisma.validationHabitude.findMany({
-      where: { id_utilisateur: userId },
-      select: { id_habitude: true, date_validation: true },
-      orderBy: { date_validation: 'asc' },
-    });
-
-    // Set de lookup rapide : "habitId-YYYY-MM-DD"
-    const validatedSet = new Set(
-      validations.map(v => `${v.id_habitude}-${v.date_validation.toISOString().split('T')[0]}`)
-    );
-
-    // Date de depart = premiere validation. Si aucune, score = 0.
-    let habitScore = 0;
-    let validatedCount = 0;
-    let missedDays = 0;
-    let startDate = null;
-
-    if (validations.length > 0 && suivis.length > 0) {
-      startDate = new Date(validations[0].date_validation);
-      startDate.setHours(0, 0, 0, 0);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      // Iterer jour par jour, habitude par habitude
-      for (let d = new Date(startDate); d <= today; d.setDate(d.getDate() + 1)) {
-        const dayStr = d.toISOString().split('T')[0];
-        for (const s of suivis) {
-          const key = `${s.id_habitude}-${dayStr}`;
-          if (validatedSet.has(key)) {
-            habitScore += s.habitude.points;
-            validatedCount += 1;
-          } else {
-            habitScore -= 2;
-            missedDays += 1;
-          }
-        }
-      }
-    }
-
-    // Sessions focus terminees
-    const sessions = await prisma.sessionFocus.findMany({
-      where: { id_utilisateur: userId, est_terminee: true, duree_reelle: { not: null } },
-      select: { duree_reelle: true },
-    });
-
-    let focusScore = 0;
-    let focusMinutes = 0;
-    for (const s of sessions) {
-      focusScore += bonusFocus(s.duree_reelle);
-      focusMinutes += s.duree_reelle;
+    if (!stats) {
+      return res.json({ score: 0, habitsFollowed: 0, validatedCount: 0, focusMinutes: 0, startDate: null });
     }
 
     res.json({
-      score: Math.max(0,habitScore + focusScore),
-      habitScore,
-      focusScore,
-      validatedCount,
-      missedDays,
-      focusSessions: sessions.length,
-      focusMinutes,
-      habitsFollowed: suivis.length,
-      startDate: startDate ? startDate.toISOString().split('T')[0] : null,
+      score: stats.score_total,
+      habitsFollowed: stats.nb_habitudes_actives,
+      validatedCount: stats.nb_validations,
+      focusMinutes: stats.total_minutes_focus,
+      startDate: stats.debut ? stats.debut.toISOString().split('T')[0] : null,
     });
   } catch (error) {
     console.error(error);
