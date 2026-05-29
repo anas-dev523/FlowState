@@ -107,10 +107,16 @@ const videos = [
     duree: 4,
   },
   {
-    titre: 'Michèle Bernier se confie sur sa dépression',
-    url: 'DSFa3Bu0ESo',
+    titre: 'Le rétablissement en santé mentale, c\'est possible!',
+    url: 'oAFMiGsRoQk',
     categorie: 'témoignage',
-    duree: 8,
+    duree: 14,
+  },
+  {
+    titre: 'Se libérer du regard des autres',
+    url: '3-FiqgVzXqY',
+    categorie: 'bien-être',
+    duree: 5,
   },
   {
     titre: 'Santé mentale, comportements sociaux et stress',
