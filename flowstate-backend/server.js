@@ -14,7 +14,8 @@ const prisma = new PrismaClient();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({origin: process.env.FRONTEND_URL || 'http://localhost:3000', credentials:true}));
+const allowedOrigin = (process.env.FRONTEND_URL || 'http://localhost:3000').trim();
+app.use(cors({origin: allowedOrigin, credentials:true}));
 app.use(express.json());
 app.use(cookieParser())
 
