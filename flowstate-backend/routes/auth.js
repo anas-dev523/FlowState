@@ -64,7 +64,7 @@ router.post('/register', async (req, res) => {
       subject: 'Confirme ton adresse email FlowState',
       html: `<p>Bonjour ${prenom},</p>
              <p>Clique sur ce lien pour activer ton compte :</p>
-             <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email?token=${verificationToken}">Activer mon compte</a>
+             <a href="${(process.env.FRONTEND_URL || 'http://localhost:3000').trim()}/verify-email?token=${verificationToken}">Activer mon compte</a>
              <p>Ce lien expire dans 24h.</p>`
     });
 
@@ -248,7 +248,7 @@ router.post('/forgot-password', async (req, res) => {
       to: email,
       subject: 'Réinitialisation de mot de passe FlowState',
       html: `<p>Clique sur ce lien pour réinitialiser ton mot de passe :</p>
-             <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}">Réinitialiser</a>
+             <a href="${(process.env.FRONTEND_URL || 'http://localhost:3000').trim()}/reset-password?token=${resetToken}">Réinitialiser</a>
              <p>Ce lien expire dans 1 heure.</p>`
     });
 
