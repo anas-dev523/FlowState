@@ -71,7 +71,6 @@ const UserSpace = () => {
   const handleLogout = async () => {
     await logout();
     localStorage.removeItem("user");
-    localStorage.removeItem("token");
     navigate("/");
   };
 

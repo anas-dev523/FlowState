@@ -131,7 +131,6 @@ function Admin() {
         <button
           onClick={() => {
             logout();
-            localStorage.removeItem('token');
             localStorage.removeItem('user');
             navigate('/login');
           }}

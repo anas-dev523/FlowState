@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://flowstate-65ht.onrender.com/api/:path*"
+    }
+  ]
+}
