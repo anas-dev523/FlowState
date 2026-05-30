@@ -105,13 +105,9 @@ router.post('/login', async (req, res) => {
       { expiresIn: '7d' }
     );
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
-    });
     res.json({
       message: 'Connexion réussie',
+      token,
       user: { id: user.id_utilisateur, role: user.role, email: user.email, prenom: user.prenom, nom: user.nom, date_creation: user.date_creation }
     });
 
