@@ -6,7 +6,26 @@ const authenticateToken = require('../middleware/auth');
 const router = express.Router();
 const prisma = new PrismaClient();
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
+async function sendBrevoEmail({ to, toName, subject, html }) {
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'api-key': process.env.BREVO_API_KEY,
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      sender: { name: 'FlowState', email: process.env.EMAIL_USER },
+      to: [{ email: to, name: toName || to }],
+      subject,
+      htmlContent: html
+    })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error('Brevo: ' + JSON.stringify(err));
+  }
+}
 
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
@@ -39,17 +58,9 @@ router.post('/register', async (req, res) => {
       data: { email, mot_de_passe: hashedPassword, prenom, nom, verification_token: verificationToken }
     });
 
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      family: 4,
-      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
-    });
-
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+    await sendBrevoEmail({
       to: email,
+      toName: prenom,
       subject: 'Confirme ton adresse email FlowState',
       html: `<p>Bonjour ${prenom},</p>
              <p>Clique sur ce lien pour activer ton compte :</p>
@@ -233,26 +244,13 @@ router.post('/forgot-password', async (req, res) => {
        }
       
     });
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      family: 4,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-  }
-});
-
-await transporter.sendMail({
-  from: process.env.EMAIL_USER,
-  to: email,
-  subject: 'Réinitialisation de mot de passe FlowState',
-  html: `<p>Clique sur ce lien pour réinitialiser ton mot de passe :</p>
-       <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}">Réinitialiser</a>
-       <p>Ce lien expire dans 1 heure.</p>`
-
-});
+    await sendBrevoEmail({
+      to: email,
+      subject: 'Réinitialisation de mot de passe FlowState',
+      html: `<p>Clique sur ce lien pour réinitialiser ton mot de passe :</p>
+             <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}">Réinitialiser</a>
+             <p>Ce lien expire dans 1 heure.</p>`
+    });
 
 res.json({ message: 'Email envoyé avec succès' });
   } catch (error) {
