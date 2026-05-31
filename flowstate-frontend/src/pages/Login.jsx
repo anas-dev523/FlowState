@@ -4,7 +4,9 @@ import { login, getHabitudes } from '../services/api';
 import AuthLayout from '../components/AuthLayout';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import usePageTitle from '../hooks/usePageTitle';
 function Login() {
+  usePageTitle('Connexion');
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');

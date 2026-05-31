@@ -5,7 +5,9 @@ import { getHabitudes,getValidationsToday } from '../services/api';
 import { useGlobalStats } from '../hooks/useGlobalStats';
 import { useDailyCompletion } from '../hooks/useDailyCompletion';
 import { ResponsiveContainer, AreaChart, Area } from 'recharts';
+import usePageTitle from '../hooks/usePageTitle';
 function Dashboard() {
+  usePageTitle('Tableau de bord');
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [habits,setHabits]= useState([]);

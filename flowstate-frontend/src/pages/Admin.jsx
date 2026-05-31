@@ -6,8 +6,10 @@ import {
   adminCreateVideo, adminUpdateVideo, adminDeleteVideo,logout
 } from '../services/api';
 import ConfirmModal from '../components/ConfirmModal';
+import usePageTitle from '../hooks/usePageTitle';
 
 function Admin() {
+  usePageTitle('Administration');
   const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [habitudes, setHabitudes] = useState([]);

@@ -1,7 +1,7 @@
 // components/Input.jsx
 // Champ de saisie réutilisable avec le style pill de FlowState
 
-function Input({ type = 'text', placeholder, name, value, onChange, required }) {
+function Input({ type = 'text', placeholder, name, value, onChange, required, ariaLabel }) {
   return (
     <input
       type={type}
@@ -10,6 +10,7 @@ function Input({ type = 'text', placeholder, name, value, onChange, required }) 
       value={value}
       onChange={onChange}
       required={required}
+      aria-label={ariaLabel || placeholder}
       style={{
         padding: '13px 20px',
         borderRadius: '25px',

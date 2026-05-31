@@ -4,7 +4,9 @@ import { useDailyCompletion } from '../hooks/useDailyCompletion';
 import StatCard from '../components/StatCard';
 import ReturnArrow from '../components/ReturnArrow';
 import {ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, Cell, Legend} from 'recharts';
+import usePageTitle from '../hooks/usePageTitle';
 function Statistiques() {
+  usePageTitle('Statistiques');
   const globalstats = useGlobalStats();
   const dailyCompletion = useDailyCompletion(14);
   const navigate = useNavigate();

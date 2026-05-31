@@ -3,7 +3,9 @@ import {useEffect, useState} from 'react';
 import { startSession, endSession } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import ReturnArrow from '../components/ReturnArrow';
+import usePageTitle from '../hooks/usePageTitle';
 function Focus() {
+usePageTitle('Session Focus');
 const navigate = useNavigate();
 const [startTime,setStartTime]=useState(25);
 const [timeLeft,setTimeLeft]=useState(startTime*60);
