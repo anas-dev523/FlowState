@@ -4,8 +4,10 @@ import { resetPassword } from '../services/api';
 import AuthLayout from '../components/AuthLayout';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import usePageTitle from '../hooks/usePageTitle';
 
 function ResetPassword() {
+  usePageTitle('Réinitialisation du mot de passe');
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const navigate = useNavigate();

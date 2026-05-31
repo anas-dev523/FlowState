@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReturnArrow from "../components/ReturnArrow";
 import VideoCard from "../components/VideoCard";
+import usePageTitle from "../hooks/usePageTitle";
 
 function Motivation() {
+  usePageTitle('Vidéos motivation');
   const [selectedVideo, setSelectedVideo] = useState(null);
   const navigate = useNavigate();
 

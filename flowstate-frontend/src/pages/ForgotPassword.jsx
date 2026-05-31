@@ -5,8 +5,10 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { forgotPassword } from '../services/api';
 import AuthLayout from '../components/AuthLayout';
+import usePageTitle from '../hooks/usePageTitle';
 
 function ForgotPassword(){
+usePageTitle('Mot de passe oublié');
 
 const[Data,setData] = useState({email:''});
 const [error, setError] = useState('');

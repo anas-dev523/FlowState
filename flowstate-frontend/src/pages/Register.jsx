@@ -4,6 +4,7 @@ import { register } from '../services/api';
 import AuthLayout from '../components/AuthLayout';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import usePageTitle from '../hooks/usePageTitle';
 
 function TermsModal({ onClose }) {
   return (
@@ -61,6 +62,7 @@ function TermsModal({ onClose }) {
 }
 
 function Register() {
+  usePageTitle('Créer un compte');
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     prenom: '',

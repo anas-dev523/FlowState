@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateProfile, updatePassword, deleteAccount, logout } from "../services/api";
 import ConfirmModal from "../components/ConfirmModal";
+import usePageTitle from "../hooks/usePageTitle";
 
 const UserSpace = () => {
+  usePageTitle('Mon espace');
   const navigate = useNavigate();
   const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
 

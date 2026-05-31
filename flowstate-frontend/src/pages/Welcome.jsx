@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
+import usePageTitle from '../hooks/usePageTitle';
 
 function Welcome() {
+  usePageTitle('Bienvenue');
   const navigate = useNavigate();
 
   return (
