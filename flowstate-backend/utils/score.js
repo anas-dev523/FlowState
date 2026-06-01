@@ -1,3 +1,8 @@
+/**
+ * Calcule le bonus de points accordé selon la durée d'une session focus.
+ * @param {number} dureeMinutes - Durée de la session en minutes
+ * @returns {number} Bonus de points : 1 (courte ≤20min), 2 (moyenne ≤50min), 3 (longue >50min)
+ */
 function bonusFocus(dureeMinutes) {
   if (dureeMinutes <= 20) return 1;
   if (dureeMinutes <= 35) return 2;
