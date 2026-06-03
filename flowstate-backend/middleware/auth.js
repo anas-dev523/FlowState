@@ -5,6 +5,14 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
+/**
+ * Middleware de vérification du token JWT.
+ * Vérifie la présence et la validité du token dans les cookies ou le header Authorization.
+ * Si valide, attache les informations de l'utilisateur à req.user et passe au middleware suivant.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 const authMiddleware = async (req, res, next) => {
   try {
     const token = req.cookies.token;

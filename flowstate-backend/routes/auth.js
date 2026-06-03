@@ -6,6 +6,14 @@ const authenticateToken = require('../middleware/auth');
 const router = express.Router();
 const prisma = new PrismaClient();
 const crypto = require('crypto');
+/**
+ * Envoie un email transactionnel via l'API REST Brevo.
+ * @param {Object} options
+ * @param {string} options.to - Adresse email du destinataire
+ * @param {string} [options.toName] - Nom du destinataire
+ * @param {string} options.subject - Sujet de l'email
+ * @param {string} options.html - Contenu HTML de l'email
+ */
 async function sendBrevoEmail({ to, toName, subject, html }) {
   const res = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
