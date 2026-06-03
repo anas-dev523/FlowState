@@ -2,6 +2,9 @@ require('dotenv').config();
 const dns = require('dns');
 dns.setDefaultResultOrder('ipv4first');
 const express = require('express');
+const rateLimit = require('express-rate-limit');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger-output.json');
 const cors = require('cors');
 const { PrismaClient } = require('@prisma/client');
 const adminRoutes = require('./routes/admin');
@@ -18,9 +21,18 @@ const PORT = process.env.PORT || 5000;
 
 const allowedOrigin = (process.env.FRONTEND_URL || 'http://localhost:3000').trim();
 app.use(cors({origin: allowedOrigin, credentials:true}));
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { error: 'Trop de tentatives. Réessayez dans 15 minutes.' }
+});
 app.use(express.json());
 app.use(cookieParser())
 
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use('/api/auth/login', loginLimiter);
+app.use('/api/auth/forgot-password', loginLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/habitudes', habitudesRoutes);
 app.use('/api/sessions', sessionsRoutes);
