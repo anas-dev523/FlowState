@@ -1,6 +1,5 @@
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { forgotPassword } from '../services/api';
@@ -20,7 +19,7 @@ const handleChange =(e) =>{
     e.preventDefault();
     setError('');
     try {
-      const response = await forgotPassword(Data) ;
+      await forgotPassword(Data) ;
       setSuccess(true)
     } catch (err) {
       setError(err.response?.data?.error || 'Erreur lors de la connexion');

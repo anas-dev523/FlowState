@@ -105,7 +105,7 @@ function Register() {
     }
     setLoading(true);
     try {
-      const response = await register({
+      await register({
         email: formData.email,
         password: formData.password,
         prenom: formData.prenom,

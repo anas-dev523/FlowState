@@ -1,5 +1,5 @@
 import Button from '../components/Button';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import { startSession, endSession } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import ReturnArrow from '../components/ReturnArrow';
@@ -18,18 +18,18 @@ useEffect(()=>{
       const id=setInterval(() => setTimeLeft(prev =>prev - 1),1000)
     return () => clearInterval(id);
 },[isRunning]);
-const endActiveSession = () => {
+const endActiveSession = useCallback(() => {
   if (sessionId !== null) {
     endSession(sessionId, {}).catch((err) => console.error(err));
     setSessionId(null);
   }
-};
+}, [sessionId]);
 useEffect(() => {
   if (timeLeft === 0 && isRunning) {
     setIsRunning(false);
     endActiveSession();
   }
-}, [timeLeft, isRunning]);
+}, [timeLeft, isRunning, endActiveSession]);
 
 
 const handleToggleRun = async () => {
