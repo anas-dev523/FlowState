@@ -130,7 +130,7 @@ function Motivation() {
             textTransform: 'uppercase',
             letterSpacing: '0.5px',
           }}>
-            {selectedVideo.categorie} · {selectedVideo.duree} min
+            {selectedVideo.categorie}
           </p>
         </>
       )}
