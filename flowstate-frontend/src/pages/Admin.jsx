@@ -130,16 +130,24 @@ function Admin() {
         <h1 style={{ fontSize: '24px', fontWeight: 700, margin: 0, color: '#000' }}>
           Admin Dashboard
         </h1>
-        <button
-          onClick={() => {
-            logout();
-            localStorage.removeItem('user');
-            navigate('/login');
-          }}
-          style={secondaryBtnStyle}
-        >
-          Déconnexion
-        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            onClick={() => navigate('/Dashboard')}
+            style={secondaryBtnStyle}
+          >
+            Espace utilisateur
+          </button>
+          <button
+            onClick={() => {
+              logout();
+              localStorage.removeItem('user');
+              navigate('/login');
+            }}
+            style={secondaryBtnStyle}
+          >
+            Déconnexion
+          </button>
+        </div>
       </div>
 
       {error && (

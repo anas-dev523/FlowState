@@ -31,16 +31,30 @@ function Dashboard() {
         display: 'flex', justifyContent: 'space-between', alignItems: 'center'
       }}>
         <Logo width={100} />
-        <div
-          onClick={() => navigate('/UserSpace')}
-          style={{
-            width: 40, height: 40, borderRadius: '50%', cursor: 'pointer',
-            backgroundColor: '#fff', display: 'flex', alignItems: 'center',
-            justifyContent: 'center', fontWeight: 700, fontSize: 15,
-            color: '#1B2AD1', flexShrink: 0,
-          }}
-        >
-          {`${user.prenom?.[0] || ''}${user.nom?.[0] || ''}`.toUpperCase()}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {user.role === 'admin' && (
+            <button
+              onClick={() => navigate('/admin')}
+              style={{
+                padding: '8px 14px', borderRadius: '10px', border: '1px solid #fff',
+                backgroundColor: 'transparent', color: '#fff', fontWeight: 600,
+                fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
+              }}
+            >
+              Espace admin
+            </button>
+          )}
+          <div
+            onClick={() => navigate('/UserSpace')}
+            style={{
+              width: 40, height: 40, borderRadius: '50%', cursor: 'pointer',
+              backgroundColor: '#fff', display: 'flex', alignItems: 'center',
+              justifyContent: 'center', fontWeight: 700, fontSize: 15,
+              color: '#1B2AD1', flexShrink: 0,
+            }}
+          >
+            {`${user.prenom?.[0] || ''}${user.nom?.[0] || ''}`.toUpperCase()}
+          </div>
         </div>
       </div>
 
