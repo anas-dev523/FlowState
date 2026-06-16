@@ -24,13 +24,13 @@ model Utilisateur {
   prenom           String   @db.VarChar(50)
   nom              String   @db.VarChar(50)
   email            String   @unique @db.VarChar(254)
-  mot_de_passe     String   @db.VarChar(255)
+  mot_de_passe     String   @db.VarChar(60)
   date_creation    DateTime @default(now())
   date_mise_a_jour DateTime @updatedAt
-  reset_token        String?
+  reset_token        String?  @db.VarChar(64)
   reset_token_expiry DateTime?
   email_verified     Boolean  @default(false)
-  verification_token String?
+  verification_token String?  @db.VarChar(64)
   role Role @default(user)
   suivis             Suivre[]
   validations        ValidationHabitude[]
@@ -75,7 +75,6 @@ model ValidationHabitude {
   id_utilisateur  String
   id_habitude     String
   date_validation DateTime @db.Date
-  est_validee     Boolean  @default(false)
   note            Int?
   date_creation   DateTime @default(now())
 
