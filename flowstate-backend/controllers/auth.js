@@ -153,7 +153,7 @@ exports.updatePassword = async (req, res) => {
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/;
     if (!passwordRegex.test(nouveauPassword)) {
-      return res.status(400).json({ error: 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial' });
+      return res.status(400).json({ error: 'Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial' });
     }
 
     const user = await prisma.utilisateur.findUnique({ where: { id_utilisateur: req.user.userId } });
@@ -251,9 +251,15 @@ exports.forgotPassword = async (req, res) => {
 exports.resetPassword = async (req, res) => {
   try {
     const { token, nouveauPassword } = req.body;
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/;
+    if (!passwordRegex.test(nouveauPassword)) {
+      return res.status(400).json({ error: 'Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial' });
+    }
+
     const tokenexist = await prisma.utilisateur.findFirst({ where: { reset_token: token } });
     if (!tokenexist) {
-      return res.status(400).json({ error: 'acun token chez nous comme ca' });
+      return res.status(400).json({ error: 'Token invalide ou expiré' });
     }
     if (tokenexist.reset_token_expiry < new Date()) {
       return res.status(400).json({ error: 'Token expiré' });
