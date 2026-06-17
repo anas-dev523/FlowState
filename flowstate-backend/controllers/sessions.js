@@ -15,6 +15,12 @@ exports.getSessions = async (req, res) => {
   }
 };
 
+/**
+ * Démarre une nouvelle session focus pour l'utilisateur authentifié.
+ * Avant de créer la session, ferme automatiquement toutes les sessions orphelines
+ * (non terminées) en calculant leur durée réelle à partir de leur heure de début.
+ * Garantit qu'un utilisateur n'a jamais plus d'une session active simultanément.
+ */
 exports.startSession = async (req, res) => {
   try {
     const activeSessions = await prisma.sessionFocus.findMany({
@@ -38,6 +44,11 @@ exports.startSession = async (req, res) => {
   }
 };
 
+/**
+ * Termine une session focus active et calcule sa durée réelle en minutes.
+ * Vérifie que la session appartient bien à l'utilisateur authentifié avant toute modification.
+ * Déclenche la mise à jour du score journalier et des statistiques globales.
+ */
 exports.terminerSession = async (req, res) => {
   try {
     const id = req.params.id;

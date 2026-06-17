@@ -10,6 +10,15 @@ function bonusFocus(dureeMinutes) {
   return 3;
 }
 
+/**
+ * Recalcule et persiste le score journalier d'un utilisateur pour une date donnée.
+ * Chaque habitude suivie mais non validée soustrait 2 points. Chaque habitude validée
+ * ajoute ses points définis. Les sessions focus terminées ce jour ajoutent un bonus via bonusFocus().
+ * Utilise un upsert pour créer ou mettre à jour l'entrée score_journalier.
+ * @param {import('@prisma/client').PrismaClient} prisma
+ * @param {string} userId - UUID de l'utilisateur
+ * @param {Date} date - La date pour laquelle recalculer le score
+ */
 async function updateDailyScore(prisma, userId, date) {
   const dayStart = new Date(date);
   dayStart.setHours(0, 0, 0, 0);
@@ -47,6 +56,14 @@ async function updateDailyScore(prisma, userId, date) {
   });
 }
 
+/**
+ * Recalcule et persiste le tableau de bord statistique global d'un utilisateur.
+ * Agrège : nombre d'habitudes suivies, total de validations, total de minutes focus,
+ * score cumulé (plancher à 0), et date de début (première validation jamais faite).
+ * Appelée après chaque validation d'habitude ou fin de session focus.
+ * @param {import('@prisma/client').PrismaClient} prisma
+ * @param {string} userId - UUID de l'utilisateur
+ */
 async function updateStatistiques(prisma, userId) {
   const nbHabitudesActives = await prisma.suivre.count({ where: { id_utilisateur: userId } });
 

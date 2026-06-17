@@ -26,6 +26,12 @@ async function sendBrevoEmail({ to, toName, subject, html }) {
   }
 }
 
+/**
+ * Inscrit un nouvel utilisateur après validation complète des entrées.
+ * Vérifie le format email (regex RFC), la politique de mot de passe (12+ chars, maj, min, chiffre, spécial),
+ * et l'unicité de l'email. Hash le mot de passe avec bcrypt (coût 10), génère un token de vérification
+ * via crypto.randomBytes(32) et envoie un email d'activation via l'API Brevo.
+ */
 exports.register = async (req, res) => {
   try {
     const { email, password, prenom, nom } = req.body;
@@ -251,12 +257,10 @@ exports.forgotPassword = async (req, res) => {
 exports.resetPassword = async (req, res) => {
   try {
     const { token, nouveauPassword } = req.body;
-
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/;
     if (!passwordRegex.test(nouveauPassword)) {
       return res.status(400).json({ error: 'Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial' });
     }
-
     const tokenexist = await prisma.utilisateur.findFirst({ where: { reset_token: token } });
     if (!tokenexist) {
       return res.status(400).json({ error: 'Token invalide ou expiré' });
