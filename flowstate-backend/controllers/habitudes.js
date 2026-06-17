@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 exports.getCatalogue = async (req, res) => {
   try {
     const habitudes = await prisma.habitude.findMany({
-      where: { est_active: true },
       orderBy: { date_creation: 'asc' }
     });
     res.json(habitudes);
