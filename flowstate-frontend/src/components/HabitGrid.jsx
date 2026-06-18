@@ -26,12 +26,7 @@ const ICON_MAP = {
 };
 
 return(
-<div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '12px',
-          marginBottom: '32px',
-        }}>
+<div className="habit-grid">
           {habits.map((habit) => {
             const on = selected.includes(habit.id_habitude);
             const Icon = ICON_MAP[habit.titre] || CircleDot;
