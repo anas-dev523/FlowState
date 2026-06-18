@@ -36,3 +36,27 @@
     transform: rotate(360deg);
   }
 }
+
+/* Responsive breakpoints */
+.habit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+@media (min-width: 768px) {
+  .habit-grid {
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    font-size: 16px;
+  }
+
+  .habit-grid {
+    gap: 20px;
+  }
+}

@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 exports.getCatalogue = async (req, res) => {
   try {
     const habitudes = await prisma.habitude.findMany({
-      where: { est_active: true },
       orderBy: { date_creation: 'asc' }
     });
     res.json(habitudes);
@@ -128,6 +127,12 @@ exports.deleteHabitude = async (req, res) => {
   }
 };
 
+/**
+ * Valide une habitude pour l'utilisateur authentifié à la date du jour.
+ * Vérifie que l'habitude est bien suivie par l'utilisateur et qu'elle n'a pas déjà
+ * été validée aujourd'hui (contrainte 1 validation/jour/habitude).
+ * Déclenche la mise à jour du score journalier et des statistiques globales.
+ */
 exports.validerHabitude = async (req, res) => {
   try {
     const id = req.params.id;
