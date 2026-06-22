@@ -166,7 +166,6 @@ async function main() {
   const videosASupprimer = allVideos.filter((v) => !titresVideosValides.includes(v.titre));
 
   for (const v of videosASupprimer) {
-    await prisma.visionnageVideo.deleteMany({ where: { id_video: v.id_video } });
     await prisma.videoMotivation.delete({ where: { id_video: v.id_video } });
     console.log(`  x ${v.titre} (supprimee)`);
   }
