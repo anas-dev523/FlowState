@@ -139,14 +139,12 @@ model Statistiques {
 }
 
 model VisionnageVideo {
-  id_visionnage   String   @id @default(uuid())
   id_utilisateur  String
   id_video        String
-  date_visionnage DateTime @default(now())
-  duree_visionnee Int?
 
   utilisateur Utilisateur     @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
   video       VideoMotivation @relation(fields: [id_video], references: [id_video], onDelete: Cascade)
 
+  @@id([id_utilisateur, id_video])
   @@map("visionnages_video")
 }

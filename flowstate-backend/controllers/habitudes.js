@@ -14,6 +14,11 @@ exports.getCatalogue = async (req, res) => {
   }
 };
 
+/**
+ * Retourne la liste des habitudes suivies par l'utilisateur authentifié.
+ * Filtre les habitudes via la table de jointure suivis pour n'exposer
+ * que celles liées au compte connecté, triées par date de création décroissante.
+ */
 exports.getMesHabitudes = async (req, res) => {
   try {
     const habitudes = await prisma.habitude.findMany({
@@ -41,6 +46,12 @@ exports.getValidationsToday = async (req, res) => {
   }
 };
 
+/**
+ * Abonne l'utilisateur authentifié à une habitude du catalogue.
+ * Vérifie que l'habitude existe et qu'elle n'est pas déjà suivie
+ * avant de créer l'entrée dans la table de joinction suivis.
+ * Met à jour les statistiques globales après l'ajout.
+ */
 exports.suivreHabitude = async (req, res) => {
   try {
     const id = req.params.id;

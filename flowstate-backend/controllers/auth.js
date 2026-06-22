@@ -79,6 +79,12 @@ exports.register = async (req, res) => {
   }
 };
 
+/**
+ * Authentifie un utilisateur avec son email et mot de passe.
+ * Vérifie l'existence du compte, la validité du mot de passe via bcrypt,
+ * et que l'email a bien été vérifié. En cas de succès, génère un JWT signé
+ * et le dépose dans un cookie httpOnly valable 7 jours.
+ */
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
