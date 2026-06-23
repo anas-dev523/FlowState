@@ -43,7 +43,7 @@ function Statistiques() {
         </h1>
       </div>
 
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '32px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '32px' }}>
         <StatCard value={globalstats.score} label="Score" />
         <StatCard value={globalstats.validatedCount} label="Validés" />
         <StatCard value={globalstats.missedDays} label="Manqués" />
