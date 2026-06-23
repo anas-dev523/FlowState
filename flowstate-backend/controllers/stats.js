@@ -9,8 +9,20 @@ exports.getGlobal = async (req, res) => {
     const stats = await prisma.statistiques.findUnique({ where: { id_utilisateur: userId } });
 
     if (!stats) {
-      return res.json({ score: 0, habitsFollowed: 0, validatedCount: 0, focusMinutes: 0, startDate: null });
+      return res.json({ score: 0, habitsFollowed: 0, validatedCount: 0, focusMinutes: 0, startDate: null, missedDays: 0, focusSessions: 0 });
     }
+
+    // Nombre de sessions focus terminées
+    const focusSessions = await prisma.sessionFocus.count({
+      where: { id_utilisateur: userId, est_terminee: true }
+    });
+
+    // Jours écoulés depuis la première validation
+    const daysSinceStart = stats.debut
+      ? Math.floor((new Date() - new Date(stats.debut)) / (1000 * 60 * 60 * 24))
+      : 0;
+    // Validations manquées = (habitudes actives × jours) - validations effectuées
+    const missedDays = Math.max(0, (stats.nb_habitudes_actives * daysSinceStart) - stats.nb_validations);
 
     res.json({
       score: stats.score_total,
@@ -18,6 +30,8 @@ exports.getGlobal = async (req, res) => {
       validatedCount: stats.nb_validations,
       focusMinutes: stats.total_minutes_focus,
       startDate: stats.debut ? stats.debut.toISOString().split('T')[0] : null,
+      missedDays,
+      focusSessions,
     });
   } catch (error) {
     console.error(error);
